@@ -2,29 +2,10 @@
 
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { setTokenProvider } from "@diaspo/api";
 import { useAuthStore, getToken } from "@diaspo/store";
-
-function makeQueryClient() {
-  return new QueryClient({
-    defaultOptions: {
-      queries: { staleTime: 60 * 1000, retry: false },
-    },
-  });
-}
-
-// Browser singleton — created once on the client, fresh on each server render.
-let browserQueryClient: QueryClient | undefined;
-
-function getQueryClient() {
-  if (typeof window === "undefined") {
-    // Server: new client per render to avoid cross-request state leaks.
-    return makeQueryClient();
-  }
-  if (!browserQueryClient) browserQueryClient = makeQueryClient();
-  return browserQueryClient;
-}
+import { getQueryClient } from "../lib/queryClient";
 
 // Register the token provider once, at module load time.
 // getToken() reads from the Zustand store without subscribing.
