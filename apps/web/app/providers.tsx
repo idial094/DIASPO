@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { setTokenProvider } from "@diaspo/api";
 import { useAuthStore, getToken } from "@diaspo/store";
@@ -60,15 +60,11 @@ function AuthHydrator() {
 }
 
 export function AppProviders({ children }: { children: ReactNode }) {
-  const [isMswReady, setIsMswReady] = useState(false);
-
   useEffect(() => {
-    void enableMocking().finally(() => setIsMswReady(true));
+    // MSW is only enabled in dev when NEXT_PUBLIC_API_MOCKING=enabled.
+    // We initialise it as a side-effect so it never blocks the initial render.
+    void enableMocking();
   }, []);
-
-  if (!isMswReady) {
-    return null;
-  }
 
   return (
     <QueryClientProvider client={queryClient}>
