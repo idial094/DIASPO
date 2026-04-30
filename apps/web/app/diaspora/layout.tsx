@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useAuthStore } from "@diaspo/store";
 
 const navItems = [
   { href: "/diaspora/dashboard", label: "Tableau de bord", icon: "🏗️" },
@@ -12,9 +13,16 @@ const navItems = [
   { href: "/diaspora/colis", label: "Colis", icon: "📦" },
 ];
 
+function userInitials(name: string | null | undefined): string {
+  if (!name) return "?";
+  const parts = name.split(" ").filter(Boolean);
+  return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase();
+}
+
 export default function DiasporaLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const user = useAuthStore((state) => state.user);
 
   const logout = () => {
     document.cookie = "auth_token=; Path=/; Max-Age=0; SameSite=Lax";
@@ -49,8 +57,8 @@ export default function DiasporaLayout({ children }: { children: ReactNode }) {
             })}
           </nav>
           <div className="hidden items-center gap-2 md:flex">
-            <span className="grid h-7 w-7 place-items-center rounded-full bg-[#eaf4ff] text-[11px] font-bold text-blue">MK</span>
-            <span className="rounded-lg border border-border px-2 py-1 text-xs font-semibold text-text">Mariam K.</span>
+            <span className="grid h-7 w-7 place-items-center rounded-full bg-[#eaf4ff] text-[11px] font-bold text-blue">{userInitials(user?.name)}</span>
+            <span className="rounded-lg border border-border px-2 py-1 text-xs font-semibold text-text">{user?.name ?? "Mon compte"}</span>
             <button
               type="button"
               onClick={logout}

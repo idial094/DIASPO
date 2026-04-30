@@ -11,6 +11,7 @@ export const endpoints = {
     adminLogin: "/api/auth/admin/login"
   },
   diaspora: {
+    projects: "/api/projects",
     project: (id: string) => `/api/projects/${id}`,
     documents: (id: string) => `/api/projects/${id}/documents`,
     payments: (id: string) => `/api/projects/${id}/payments`,

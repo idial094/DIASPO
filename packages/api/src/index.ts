@@ -1,5 +1,7 @@
 export * from "./endpoints";
 export * from "./client";
+export * from "./hooks/useMyProjects";
+export * from "./hooks/useCreateProject";
 export * from "./hooks/useProjectSummary";
 export * from "./hooks/useProjectPayments";
 export * from "./hooks/useProjectMessages";

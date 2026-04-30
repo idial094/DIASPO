@@ -90,12 +90,60 @@ const apiFetch = ((input: Parameters<typeof globalThis.fetch>[0], init?: Paramet
   return globalThis.fetch(resolveApiInput(input), { ...init, headers });
 }) as typeof globalThis.fetch;
 
+export interface ProjectListItem {
+  id: string;
+  title: string;
+  location: string;
+  progress: number;
+  status: string;
+  stage: string;
+  estimatedCompletionDate: string | null;
+}
+
+export interface CreateProjectPayload {
+  title: string;
+  location: string;
+}
+
+export async function getMyProjects(): Promise<ProjectListItem[]> {
+  try {
+    const response = await apiFetch(endpoints.diaspora.projects);
+    if (!response.ok) throw new Error(`API error: ${response.status}`);
+    return (await response.json()) as ProjectListItem[];
+  } catch (error) {
+    if (!shouldUseMockFallback(error)) throw error;
+    return projects.map((p) => ({
+      id: p.id,
+      title: p.title,
+      location: "Conakry, Guinée",
+      progress: p.progress,
+      status: p.status,
+      stage: p.status,
+      estimatedCompletionDate: null,
+    }));
+  }
+}
+
+export async function createProject(payload: CreateProjectPayload): Promise<{ id: string }> {
+  const response = await apiFetch(endpoints.diaspora.projects, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({})) as { message?: string };
+    throw new Error(err.message ?? `Erreur lors de la création du projet (${response.status})`);
+  }
+  return (await response.json()) as { id: string };
+}
+
 export interface ProjectSummary {
   id: string;
   client: string;
   title: string;
   progress: number;
   status: string;
+  stage: string;
 }
 
 export async function getProjectSummary(projectId: string): Promise<ProjectSummary> {
@@ -113,7 +161,7 @@ export async function getProjectSummary(projectId: string): Promise<ProjectSumma
     if (!shouldUseMockFallback(error)) throw error;
     const fallback = projects.find((item) => item.id === projectId);
     if (fallback) {
-      return fallback;
+      return { ...fallback, stage: fallback.status };
     }
 
     return {
@@ -121,7 +169,8 @@ export async function getProjectSummary(projectId: string): Promise<ProjectSumma
       client: "Client inconnu",
       title: "Projet",
       progress: 0,
-      status: "inconnu"
+      status: "inconnu",
+      stage: "inconnu",
     };
   }
 }
@@ -130,7 +179,9 @@ export interface PaymentItem {
   id: string;
   projectId: string;
   amountGnf: number;
+  amountEur?: number | null;
   status: string;
+  stage?: string | null;
   createdAt: string;
 }
 
