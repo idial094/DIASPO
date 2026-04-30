@@ -1,12 +1,30 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { setTokenProvider } from "@diaspo/api";
 import { useAuthStore, getToken } from "@diaspo/store";
 
-const queryClient = new QueryClient();
+function makeQueryClient() {
+  return new QueryClient({
+    defaultOptions: {
+      queries: { staleTime: 60 * 1000, retry: false },
+    },
+  });
+}
+
+// Browser singleton — created once on the client, fresh on each server render.
+let browserQueryClient: QueryClient | undefined;
+
+function getQueryClient() {
+  if (typeof window === "undefined") {
+    // Server: new client per render to avoid cross-request state leaks.
+    return makeQueryClient();
+  }
+  if (!browserQueryClient) browserQueryClient = makeQueryClient();
+  return browserQueryClient;
+}
 
 // Register the token provider once, at module load time.
 // getToken() reads from the Zustand store without subscribing.
@@ -60,9 +78,9 @@ function AuthHydrator() {
 }
 
 export function AppProviders({ children }: { children: ReactNode }) {
+  const [queryClient] = useState(() => getQueryClient());
+
   useEffect(() => {
-    // MSW is only enabled in dev when NEXT_PUBLIC_API_MOCKING=enabled.
-    // We initialise it as a side-effect so it never blocks the initial render.
     void enableMocking();
   }, []);
 
