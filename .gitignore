@@ -1,0 +1,28 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+.next
+.expo
+.turbo
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Environment files — NE JAMAIS committer les secrets
+.env
+.env.local
+.env.production
+.env.staging
+# Garder les exemples (pas de secrets dedans)
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tests
+coverage

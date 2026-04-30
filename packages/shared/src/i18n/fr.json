@@ -1,0 +1,21 @@
+{
+  "app.name": "Diaspo App",
+  "auth.login.title": "Connexion",
+  "auth.login.subtitle": "Diaspora et Agence",
+  "diaspora.dashboard.title": "Tableau de bord",
+  "diaspora.payments.title": "Paiements",
+  "diaspora.messages.title": "Messages",
+  "diaspora.documents.title": "Documents",
+  "diaspora.colis.title": "Colis",
+  "agence.projects.title": "Projets",
+  "agence.siteUpdate.title": "Mise a jour chantier",
+  "agence.payments.title": "Paiements agence",
+  "agence.colis.title": "Colis agence",
+  "agence.messages.title": "Messages agence",
+  "admin.dashboard.title": "Tableau de bord admin",
+  "form.error.required": "Ce champ est requis",
+  "form.error.invalidEmail": "Email invalide",
+  "form.error.minPassword": "Minimum 8 caracteres",
+  "form.error.invalidAmount": "Montant invalide",
+  "form.error.invalidAddress": "Adresse complete requise"
+}

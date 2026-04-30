@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Diaspo App – Prototype v3</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #1A6FC4;
+  --blue-mid: #2582DB;
+  --blue-light: #4FA3F0;
+  --blue-pale: #EAF4FF;
+  --gold: #C8922A;
+  --gold-light: #E8B84B;
+  --gold-pale: #FEF8EC;
+  --green: #1B7A45;
+  --green-light: #22A05A;
+  --red: #CE1126;
+  --bg: #F4F7FB;
+  --bg2: #EBF1F9;
+  --white: #FFFFFF;
+  --dark: #0E1B2E;
+  --dark2: #1C2E46;
+  --card: #FFFFFF;
+  --border: #D6E4F2;
+  --text: #1A2B40;
+  --text-mid: #4A6080;
+  --text-muted: #8AA0B8;
+  --shadow: 0 2px 16px rgba(26,111,196,0.09);
+  --shadow-lg: 0 8px 40px rgba(26,111,196,0.14);
+  --mobile-nav-h: 64px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+
+/* ══ PAGES ══════════════════════════════ */
+.page { display:none; min-height:100vh; }
+.page.active { display:flex; flex-direction:column; }
+
+/* ══ LOGIN PAGE ═════════════════════════ */
+#page-login {
+  background:linear-gradient(135deg,#0E1B2E 0%,#1C3A6E 50%,#1A6FC4 100%);
+  position:relative; overflow:hidden;
+  align-items:center; justify-content:center;
+  padding:20px;
+}
+.bg-circle { position:absolute; border-radius:50%; animation:floatCircle 8s ease-in-out infinite; }
+.bc1{width:500px;height:500px;background:rgba(79,163,240,0.08);top:-150px;right:-100px;animation-delay:0s;}
+.bc2{width:300px;height:300px;background:rgba(200,146,42,0.1);bottom:-80px;left:-60px;animation-delay:-3s;}
+.bc3{width:200px;height:200px;background:rgba(79,163,240,0.05);top:40%;left:10%;animation-delay:-5s;}
+@keyframes floatCircle{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-20px) scale(1.04);}}
+
+.login-card {
+  background:rgba(255,255,255,0.97);
+  backdrop-filter:blur(24px);
+  border-radius:28px; padding:48px 44px;
+  width:100%; max-width:460px;
+  box-shadow:0 30px 80px rgba(0,0,0,0.3);
+  position:relative; z-index:10;
+  animation:slideInCard 0.6s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes slideInCard{from{transform:translateY(30px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:32px;}
+.login-logo-icon{width:52px;height:52px;background:linear-gradient(135deg,var(--blue),var(--blue-light));border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 8px 24px rgba(26,111,196,0.3);}
+.login-logo-text h1{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:700;color:var(--dark);}
+.login-logo-text span{font-size:0.78rem;color:var(--text-muted);}
+.login-welcome{margin-bottom:28px;}
+.login-welcome h2{font-size:1.4rem;font-weight:700;color:var(--dark);margin-bottom:6px;}
+.login-welcome p{font-size:0.88rem;color:var(--text-mid);}
+.field-group{margin-bottom:16px;}
+.field-label{font-size:0.78rem;font-weight:600;color:var(--text-mid);margin-bottom:7px;display:block;text-transform:uppercase;letter-spacing:0.05em;}
+.field-input{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;color:var(--text);background:var(--bg);outline:none;transition:all 0.2s;}
+.field-input:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,111,196,0.1);}
+.role-selector{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:24px;}
+.role-btn{padding:12px 8px;border:1.5px solid var(--border);border-radius:12px;background:var(--bg);cursor:pointer;text-align:center;transition:all 0.2s;font-family:'Plus Jakarta Sans',sans-serif;}
+.role-btn .role-icon{font-size:22px;display:block;margin-bottom:4px;}
+.role-btn .role-name{font-size:0.75rem;font-weight:600;color:var(--text-mid);}
+.role-btn.selected{border-color:var(--blue);background:var(--blue-pale);}
+.role-btn.selected .role-name{color:var(--blue);}
+.btn-login{width:100%;padding:15px;background:linear-gradient(135deg,var(--blue),var(--blue-mid));color:white;border:none;border-radius:14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(26,111,196,0.35);transition:all 0.2s;}
+.btn-login:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(26,111,196,0.45);}
+.login-footer{text-align:center;margin-top:16px;font-size:0.8rem;color:var(--text-muted);}
+.flag-stripe{display:flex;height:4px;border-radius:2px;overflow:hidden;margin-bottom:24px;}
+.fs-r{flex:1;background:var(--red);}
+.fs-g{flex:1;background:var(--gold);}
+.fs-v{flex:1;background:var(--green);}
+
+/* ══ TOP NAV (DESKTOP) ══════════════════ */
+.topnav{height:65px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(26,111,196,0.07);}
+.tn-logo{display:flex;align-items:center;gap:10px;font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;color:var(--dark);text-decoration:none;cursor:pointer;}
+.tn-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--blue),var(--blue-light));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;color:white;}
+.tn-sep{flex:1;}
+.tn-tabs{display:flex;gap:4px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:4px;}
+.tn-tab{padding:7px 16px;border-radius:8px;border:none;background:transparent;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.82rem;font-weight:500;color:var(--text-muted);transition:all 0.2s;}
+.tn-tab.active{background:var(--blue);color:white;font-weight:600;}
+.tn-tab:hover:not(.active){color:var(--text);background:var(--bg2);}
+.tn-user{display:flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;background:var(--bg);border:1px solid var(--border);border-radius:40px;cursor:pointer;transition:border-color 0.2s;}
+.tn-user:hover{border-color:var(--blue);}
+.tn-user span{font-size:0.83rem;font-weight:500;}
+.logout-btn{padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;font-size:0.78rem;color:var(--text-muted);cursor:pointer;transition:all 0.2s;font-family:'Plus Jakarta Sans',sans-serif;}
+.logout-btn:hover{border-color:var(--red);color:var(--red);}
+.ava{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.75rem;color:white;}
+.ava-blue{background:linear-gradient(135deg,var(--blue),var(--blue-light));}
+.ava-green{background:linear-gradient(135deg,var(--green),var(--green-light));}
+.ava-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--dark);}
+
+/* ══ MOBILE BOTTOM NAV ══════════════════ */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:var(--mobile-nav-h);background:var(--white);border-top:1px solid var(--border);z-index:200;box-shadow:0 -4px 24px rgba(26,111,196,0.1);}
+.mnav-inner{display:flex;height:100%;}
+.mnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border:none;background:none;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text-muted);transition:all 0.2s;padding:4px 0;}
+.mnav-item.active{color:var(--blue);}
+.mnav-icon{font-size:20px;position:relative;}
+.mnav-label{font-size:0.65rem;font-weight:600;}
+.mnav-badge{position:absolute;top:-4px;right:-8px;background:var(--red);color:white;font-size:0.55rem;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+
+/* ══ MOBILE HEADER ══════════════════════ */
+.mobile-header{display:none;height:60px;background:var(--white);border-bottom:1px solid var(--border);padding:0 18px;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(26,111,196,0.07);}
+.mh-logo{display:flex;align-items:center;gap:8px;font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--dark);}
+.mh-logo-icon{width:30px;height:30px;background:linear-gradient(135deg,var(--blue),var(--blue-light));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;color:white;}
+.mh-actions{display:flex;align-items:center;gap:8px;}
+.mh-notif{width:36px;height:36px;border-radius:10px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;position:relative;}
+.mh-notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--red);border-radius:50%;border:2px solid white;}
+
+/* ══ APP BODY ═══════════════════════════ */
+.app-body{flex:1;padding:24px 28px;max-width:1280px;margin:0 auto;width:100%;}
+
+/* ══ CARDS ══════════════════════════════ */
+.card{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:22px;box-shadow:var(--shadow);}
+.card-title{font-size:0.92rem;font-weight:700;color:var(--dark);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.ct-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot-blue{background:var(--blue);}
+.dot-gold{background:var(--gold);}
+.dot-green{background:var(--green-light);}
+.dot-red{background:var(--red);}
+
+/* ══ STAT CARDS ═════════════════════════ */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+.stat-card{background:var(--white);border:1px solid var(--border);border-radius:18px;padding:18px 20px;box-shadow:var(--shadow);transition:transform 0.2s,box-shadow 0.2s;}
+.stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+.sc-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:12px;}
+.sci-blue{background:var(--blue-pale);}
+.sci-gold{background:var(--gold-pale);}
+.sci-green{background:rgba(27,122,69,0.1);}
+.sci-red{background:rgba(206,17,38,0.08);}
+.sc-value{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--dark);}
+.sc-label{font-size:0.78rem;color:var(--text-muted);margin-top:3px;}
+.sc-trend{font-size:0.75rem;margin-top:6px;font-weight:500;}
+.tr-up{color:var(--green-light);}
+.tr-down{color:var(--red);}
+.tr-neu{color:var(--blue);}
+
+/* ══ ALERT BANNER ════════════════════════ */
+.alert-box{background:linear-gradient(135deg,#FEF8EC,#FFF3D0);border:1px solid rgba(200,146,42,0.3);border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px;margin-bottom:22px;animation:pulseAlert 3s ease-in-out infinite;}
+@keyframes pulseAlert{0%,100%{box-shadow:0 0 0 0 rgba(200,146,42,0.2);}50%{box-shadow:0 0 0 6px rgba(200,146,42,0);}}
+.ab-icon{font-size:24px;flex-shrink:0;}
+.ab-text h4{font-size:0.9rem;font-weight:700;color:var(--gold);}
+.ab-text p{font-size:0.82rem;color:var(--text-mid);margin-top:2px;}
+.ab-btn{margin-left:auto;padding:9px 20px;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:white;border:none;border-radius:10px;font-size:0.82rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif;box-shadow:0 4px 16px rgba(200,146,42,0.3);transition:all 0.2s;}
+.ab-btn:hover{transform:scale(1.03);}
+
+/* ══ GRID LAYOUTS ═══════════════════════ */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;}
+.gcol{display:flex;flex-direction:column;gap:18px;}
+
+/* ══ TIMELINE ════════════════════════════ */
+.timeline{display:flex;flex-direction:column;}
+.tl{display:flex;gap:14px;padding-bottom:16px;cursor:pointer;}
+.tl:last-child{padding-bottom:0;}
+.tl-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:16px;}
+.tl-d{width:14px;height:14px;border-radius:50%;margin-top:3px;flex-shrink:0;}
+.tl-l{width:2px;flex:1;margin-top:3px;}
+.tl:last-child .tl-l{display:none;}
+.td-done{background:var(--green-light);}
+.td-active{background:var(--blue);box-shadow:0 0 0 4px rgba(26,111,196,0.2);}
+.td-pending{background:var(--bg2);border:2px solid var(--border);}
+.tl-l-done{background:var(--green-light);opacity:0.3;}
+.tl-l-active{background:var(--border);}
+.tl-r h4{font-size:0.87rem;font-weight:600;color:var(--dark);}
+.tl-r p{font-size:0.75rem;color:var(--text-muted);margin-top:2px;}
+.tl-badge{display:inline-block;font-size:0.68rem;font-weight:700;padding:2px 9px;border-radius:20px;margin-top:5px;}
+.tb-done{background:rgba(27,122,69,0.1);color:var(--green);}
+.tb-active{background:var(--blue-pale);color:var(--blue);}
+.tb-pending{background:var(--bg2);color:var(--text-muted);}
+
+/* ══ PHOTO GRID ══════════════════════════ */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.photo-thumb{aspect-ratio:1;border-radius:12px;overflow:hidden;cursor:pointer;transition:transform 0.25s;display:flex;align-items:center;justify-content:center;font-size:28px;position:relative;}
+.photo-thumb:hover{transform:scale(1.04);}
+.photo-overlay{position:absolute;inset:0;background:rgba(26,47,80,0.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;font-size:20px;}
+.photo-thumb:hover .photo-overlay{opacity:1;}
+.pt1{background:linear-gradient(135deg,#B0BEC5,#90A4AE);}
+.pt2{background:linear-gradient(135deg,#A5D6A7,#81C784);}
+.pt3{background:linear-gradient(135deg,#FFE082,#FFD54F);}
+.pt4{background:linear-gradient(135deg,#EF9A9A,#E57373);}
+.pt5{background:linear-gradient(135deg,#CE93D8,#BA68C8);}
+.pt6{background:linear-gradient(135deg,#80DEEA,#4DD0E1);}
+
+/* ══ PROGRESS BAR ════════════════════════ */
+.prog-bar{height:8px;background:var(--bg2);border-radius:4px;overflow:hidden;margin-top:6px;}
+.prog-fill{height:100%;border-radius:4px;transition:width 1s ease;}
+.pf-blue{background:linear-gradient(90deg,var(--blue),var(--blue-light));}
+.pf-gold{background:linear-gradient(90deg,var(--gold),var(--gold-light));}
+.pf-green{background:linear-gradient(90deg,var(--green),var(--green-light));}
+
+/* ══ PAYMENT LIST ════════════════════════ */
+.pay-list{display:flex;flex-direction:column;gap:10px;}
+.pay-row{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all 0.2s;}
+.pay-row:hover{border-color:var(--blue-light);background:var(--blue-pale);}
+.pay-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.pi-g{background:rgba(27,122,69,0.1);}
+.pi-o{background:rgba(200,146,42,0.1);}
+.pi-b{background:rgba(26,111,196,0.1);}
+.pi-r{background:rgba(206,17,38,0.1);}
+.pay-info{flex:1;min-width:0;}
+.pay-name{font-size:0.85rem;font-weight:600;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pay-date{font-size:0.75rem;color:var(--text-muted);margin-top:1px;}
+.pay-amt{font-size:0.88rem;font-weight:700;white-space:nowrap;}
+.amt-green{color:var(--green);}
+.amt-gold{color:var(--gold);}
+.amt-red{color:var(--red);}
+
+/* ══ PILL BADGES ═════════════════════════ */
+.pill{font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;}
+.p-green{background:rgba(27,122,69,0.1);color:var(--green);}
+.p-gold{background:rgba(200,146,42,0.1);color:var(--gold);}
+.p-red{background:rgba(206,17,38,0.1);color:var(--red);}
+.p-blue{background:var(--blue-pale);color:var(--blue);}
+
+/* ══ CHAT ════════════════════════════════ */
+.chat-area{display:flex;flex-direction:column;gap:14px;max-height:280px;overflow-y:auto;padding:4px 2px;}
+.cmsg{display:flex;gap:10px;align-items:flex-start;}
+.cmsg.me{flex-direction:row-reverse;}
+.cava{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;color:white;flex-shrink:0;}
+.cava-me{background:linear-gradient(135deg,var(--blue),var(--blue-light));}
+.cava-ag{background:linear-gradient(135deg,var(--green),var(--green-light));}
+.cbubble{padding:10px 14px;border-radius:16px;font-size:0.85rem;line-height:1.45;max-width:280px;}
+.cb-me{background:linear-gradient(135deg,var(--blue),var(--blue-mid));color:white;border-bottom-right-radius:4px;}
+.cb-ag{background:var(--white);border:1px solid var(--border);color:var(--text);border-bottom-left-radius:4px;}
+.ctime{font-size:0.67rem;color:var(--text-muted);margin-top:4px;text-align:right;}
+.cmsg:not(.me) .ctime{text-align:left;}
+.chat-input-row{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
+.ti{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;color:var(--text);background:var(--bg);outline:none;resize:none;transition:border-color 0.2s;}
+.ti:focus{border-color:var(--blue);}
+.chat-send{padding:11px 18px;background:var(--blue);color:white;border:none;border-radius:12px;cursor:pointer;font-size:0.9rem;transition:all 0.2s;flex-shrink:0;}
+.chat-send:hover{background:var(--blue-mid);}
+
+/* ══ INNER TABS ══════════════════════════ */
+.itabs{display:flex;gap:6px;margin-bottom:16px;}
+.itab{padding:6px 14px;border-radius:8px;border:none;background:transparent;cursor:pointer;font-size:0.78rem;font-weight:600;color:var(--text-muted);font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s;}
+.itab.on{background:var(--blue-pale);color:var(--blue);}
+
+/* ══ BUTTONS ═════════════════════════════ */
+.btn-primary{padding:10px 20px;background:linear-gradient(135deg,var(--blue),var(--blue-mid));color:white;border:none;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 14px rgba(26,111,196,0.25);}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,111,196,0.35);}
+.btn-outline{padding:10px 20px;background:transparent;color:var(--text-mid);border:1.5px solid var(--border);border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.btn-outline:hover{border-color:var(--blue);color:var(--blue);}
+.act-btn{padding:6px 14px;background:var(--blue-pale);color:var(--blue);border:none;border-radius:8px;font-size:0.75rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s;}
+.act-btn:hover{background:var(--blue);color:white;}
+
+/* ══ FORMS ═══════════════════════════════ */
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group label{font-size:0.78rem;font-weight:600;color:var(--text-mid);text-transform:uppercase;letter-spacing:0.04em;}
+.form-group input,.form-group select,.form-group textarea{padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;color:var(--text);background:var(--bg);outline:none;transition:border-color 0.2s;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue);background:white;}
+.form-row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}
+.form-row .form-group{flex:1;min-width:140px;}
+
+/* ══ UPLOAD DROP ═════════════════════════ */
+.upload-drop{border:2px dashed var(--border);border-radius:16px;padding:28px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.upload-drop:hover{border-color:var(--blue);background:var(--blue-pale);}
+.ud-icon{font-size:32px;margin-bottom:10px;}
+.ud-text{font-size:0.82rem;color:var(--text-mid);line-height:1.5;}
+
+/* ══ TABLE ═══════════════════════════════ */
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+.tbl td{font-size:0.83rem;padding:12px 14px;border-bottom:1px solid rgba(214,228,242,0.5);color:var(--text);}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:var(--bg);}
+.proj-name{font-weight:600;color:var(--dark);}
+
+/* ══ PAGE HEADER ═════════════════════════ */
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px;}
+.ph h2{font-family:'Cormorant Garamond',serif;font-size:1.65rem;font-weight:700;color:var(--dark);}
+.ph p{font-size:0.82rem;color:var(--text-muted);margin-top:3px;}
+.back-link{font-size:0.82rem;color:var(--blue);cursor:pointer;margin-bottom:16px;display:inline-flex;align-items:center;gap:5px;}
+
+/* ══ ADMIN LAYOUT ════════════════════════ */
+.admin-layout{display:grid;grid-template-columns:220px 1fr;gap:20px;}
+.aside{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:18px;box-shadow:var(--shadow);height:fit-content;position:sticky;top:82px;}
+.aside-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin:10px 0 6px;}
+.aside-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:10px;cursor:pointer;font-size:0.83rem;font-weight:500;color:var(--text-mid);transition:all 0.2s;margin-bottom:2px;position:relative;}
+.aside-item:hover{background:var(--bg);color:var(--dark);}
+.aside-item.on{background:var(--blue-pale);color:var(--blue);font-weight:600;}
+.aside-icon{font-size:16px;}
+.aside-badge{margin-left:auto;background:var(--red);color:white;font-size:0.65rem;font-weight:700;padding:2px 7px;border-radius:10px;}
+
+/* ══ KPI ROW ═════════════════════════════ */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
+.kpi{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:18px 16px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:transform 0.2s;}
+.kpi:hover{transform:translateY(-2px);}
+.kpi-num{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;}
+.kpi-lbl{font-size:0.75rem;color:var(--text-muted);margin-top:2px;}
+
+/* ══ BAR CHART ═══════════════════════════ */
+.bars{display:flex;align-items:flex-end;gap:8px;height:120px;padding-top:16px;}
+.bar-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;}
+.bar{width:100%;background:linear-gradient(180deg,var(--blue),var(--blue-pale));border-radius:6px 6px 0 0;position:relative;cursor:pointer;transition:opacity 0.2s;}
+.bar:hover{opacity:0.8;}
+.bar-tip{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:0.65rem;font-weight:700;color:var(--blue);white-space:nowrap;}
+.bar-lbl{font-size:0.68rem;color:var(--text-muted);}
+
+/* ══ USERS ═══════════════════════════════ */
+.usr-list{display:flex;flex-direction:column;gap:8px;}
+.usr-row{display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--bg);border-radius:10px;cursor:pointer;transition:all 0.2s;}
+.usr-row:hover{background:var(--blue-pale);}
+.usr-info{flex:1;}
+.usr-name{font-size:0.85rem;font-weight:600;color:var(--dark);}
+.usr-sub{font-size:0.73rem;color:var(--text-muted);margin-top:1px;}
+
+/* ══ MODAL ═══════════════════════════════ */
+.overlay{display:none;position:fixed;inset:0;background:rgba(14,27,46,0.55);backdrop-filter:blur(4px);z-index:500;align-items:center;justify-content:center;padding:20px;}
+.overlay.on{display:flex;}
+.modal{background:white;border-radius:24px;padding:36px;max-width:440px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,0.25);animation:modalIn 0.3s cubic-bezier(0.22,1,0.36,1);}
+@keyframes modalIn{from{transform:scale(0.9) translateY(10px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
+.modal h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--dark);margin-bottom:6px;}
+.modal-sub{font-size:0.83rem;color:var(--text-muted);margin-bottom:22px;}
+.modal-amount-box{background:linear-gradient(135deg,var(--blue),var(--blue-mid));border-radius:16px;padding:20px;text-align:center;margin-bottom:20px;}
+.mab-amt{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:white;}
+.mab-sub{font-size:0.78rem;color:rgba(255,255,255,0.75);margin-top:4px;}
+.modal-btns{display:flex;gap:10px;}
+.mbtn-cancel{flex:1;padding:13px;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;color:var(--text-mid);}
+.mbtn-pay{flex:2;padding:13px;background:linear-gradient(135deg,var(--blue),var(--blue-mid));color:white;border:none;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(26,111,196,0.35);}
+
+/* ══ SUCCESS OVERLAY ═════════════════════ */
+.success-overlay{display:none;position:fixed;inset:0;background:rgba(14,27,46,0.65);backdrop-filter:blur(6px);z-index:600;align-items:center;justify-content:center;padding:20px;}
+.success-overlay.on{display:flex;}
+.success-card{background:white;border-radius:28px;padding:48px 40px;text-align:center;max-width:380px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,0.25);animation:modalIn 0.4s cubic-bezier(0.22,1,0.36,1);}
+.success-icon{font-size:56px;margin-bottom:16px;}
+.success-card h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--dark);margin-bottom:12px;}
+.success-card p{font-size:0.88rem;color:var(--text-mid);line-height:1.6;margin-bottom:24px;}
+.success-close{padding:12px 32px;background:linear-gradient(135deg,var(--green),var(--green-light));color:white;border:none;border-radius:14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;}
+
+/* ══ TOAST ═══════════════════════════════ */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark);color:white;padding:12px 22px;border-radius:30px;font-size:0.85rem;font-weight:500;opacity:0;transition:all 0.3s;z-index:1000;white-space:nowrap;pointer-events:none;box-shadow:0 8px 30px rgba(0,0,0,0.3);}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+@media(min-width:769px){.toast{bottom:30px;}}
+
+/* ══ COLIS SECTION ═══════════════════════ */
+.colis-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+.colis-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:18px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow);}
+.colis-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+.cc-icon{font-size:28px;margin-bottom:10px;}
+.cc-title{font-size:0.88rem;font-weight:700;color:var(--dark);margin-bottom:4px;}
+.cc-desc{font-size:0.75rem;color:var(--text-muted);line-height:1.4;}
+.cc-price{font-size:0.82rem;font-weight:700;color:var(--blue);margin-top:10px;}
+
+.tracking-card{background:linear-gradient(135deg,#0E1B2E,#1C3A6E);border-radius:20px;padding:22px;color:white;margin-bottom:18px;}
+.tc-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;opacity:0.7;margin-bottom:4px;}
+.tc-id{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;margin-bottom:16px;}
+.tc-steps{display:flex;gap:0;position:relative;}
+.tc-steps::before{content:'';position:absolute;top:12px;left:10%;right:10%;height:2px;background:rgba(255,255,255,0.2);}
+.tc-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;z-index:1;}
+.tcs-dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;}
+.tcs-done{background:var(--green-light);}
+.tcs-active{background:var(--gold);animation:pulseDot 2s infinite;}
+@keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(232,184,75,0.5);}50%{box-shadow:0 0 0 6px rgba(232,184,75,0);}}
+.tcs-pending{background:rgba(255,255,255,0.2);}
+.tcs-lbl{font-size:0.62rem;text-align:center;opacity:0.8;}
+
+/* ══ EXPORT SECTION ══════════════════════ */
+.export-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.export-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:all 0.2s;}
+.export-card:hover{background:var(--blue-pale);border-color:var(--blue-light);}
+.ec-icon{font-size:24px;}
+.ec-title{font-size:0.85rem;font-weight:600;color:var(--dark);}
+.ec-desc{font-size:0.75rem;color:var(--text-muted);}
+.ec-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;background:var(--blue-pale);color:var(--blue);border-radius:8px;font-size:0.75rem;font-weight:700;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;}
+
+/* ══ NOTIFICATION ITEM ═══════════════════ */
+.notif-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.notif-item:last-child{border-bottom:none;}
+.ni-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.ni-content{flex:1;}
+.ni-title{font-size:0.85rem;font-weight:600;color:var(--dark);}
+.ni-desc{font-size:0.75rem;color:var(--text-muted);margin-top:2px;line-height:1.4;}
+.ni-time{font-size:0.68rem;color:var(--text-muted);margin-top:4px;}
+.ni-unread{width:8px;height:8px;background:var(--blue);border-radius:50%;margin-top:6px;flex-shrink:0;}
+
+/* ══ MOBILE PANEL ════════════════════════ */
+.mobile-panel{display:none;}
+
+
+/* ══ MOBILE LOGOUT BTN ══════════════════ */
+.mh-logout{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:rgba(206,17,38,0.08);border:1px solid rgba(206,17,38,0.2);font-size:15px;cursor:pointer;transition:all 0.2s;color:var(--red);}
+.mh-logout:hover{background:var(--red);color:white;}
+
+/* ══ BACK BUTTON ═════════════════════════ */
+.back-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;background:var(--white);border:1.5px solid var(--border);border-radius:12px;font-size:0.82rem;font-weight:600;color:var(--text-mid);cursor:pointer;transition:all 0.2s;margin-bottom:16px;font-family:'Plus Jakarta Sans',sans-serif;box-shadow:0 1px 6px rgba(26,111,196,0.06);}
+.back-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-pale);}
+.back-btn-icon{font-size:14px;}
+
+/* ══ RESPONSIVE ═════════════════════════ */
+@media(max-width:768px){
+  .topnav{display:none !important;}
+  .mobile-header{display:flex !important;}
+  .mobile-nav{display:block !important;}
+  .app-body{padding:16px;padding-bottom:calc(var(--mobile-nav-h) + 16px);}
+  .stats-row{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+  .g2,.g3{grid-template-columns:1fr;}
+  .admin-layout{grid-template-columns:1fr;}
+  .aside{display:none;}
+  .kpi-row{grid-template-columns:1fr 1fr;gap:10px;}
+  .colis-grid{grid-template-columns:1fr 1fr;}
+  .export-grid{grid-template-columns:1fr 1fr;}
+  .sc-value{font-size:1.5rem;}
+  .ph h2{font-size:1.3rem;}
+  .tn-tabs{display:none;}
+  .mobile-panel{display:block;}
+  .form-row{flex-direction:column;}
+  .login-card{padding:36px 28px;}
+  .tc-steps{gap:0;}
+}
+@media(max-width:480px){
+  .stats-row{grid-template-columns:1fr 1fr;gap:8px;}
+  .colis-grid{grid-template-columns:1fr;}
+  .export-grid{grid-template-columns:1fr;}
+  .kpi-row{grid-template-columns:1fr 1fr;}
+  .photo-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════ -->
+<!--  PAGE 1 – LOGIN                         -->
+<!-- ════════════════════════════════════════ -->
+<div id="page-login" class="page active">
+  <div class="bg-circle bc1"></div>
+  <div class="bg-circle bc2"></div>
+  <div class="bg-circle bc3"></div>
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">🌍</div>
+      <div class="login-logo-text">
+        <h1>Diaspo App</h1>
+        <span>La plateforme de la diaspora africaine</span>
+      </div>
+    </div>
+    <div class="flag-stripe"><div class="fs-r"></div><div class="fs-g"></div><div class="fs-v"></div></div>
+    <div class="login-welcome">
+      <h2>Bienvenue 👋</h2>
+      <p>Connectez-vous pour accéder à votre espace</p>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Adresse e-mail</label>
+      <input id="loginEmail" class="field-input" type="email" placeholder="vous@email.com" value="mariam@example.com">
+    </div>
+    <div class="field-group" style="margin-bottom:24px;">
+      <label class="field-label">Votre profil</label>
+      <div class="role-selector">
+        <div class="role-btn selected" onclick="selectRole(this,'diaspora')">
+          <span class="role-icon">🌍</span>
+          <span class="role-name">Diaspora</span>
+        </div>
+        <div class="role-btn" onclick="selectRole(this,'agence')">
+          <span class="role-icon">🏢</span>
+          <span class="role-name">Agence</span>
+        </div>
+        <div class="role-btn" onclick="selectRole(this,'admin')">
+          <span class="role-icon">⚙️</span>
+          <span class="role-name">Admin</span>
+        </div>
+      </div>
+    </div>
+    <button class="btn-login" onclick="doLogin()">Accéder à mon espace →</button>
+    <p class="login-footer">🔒 Connexion sécurisée · SSL · 2FA activé</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!--  PAGE 2 – DIASPORA                      -->
+<!-- ════════════════════════════════════════ -->
+<div id="page-diaspora" class="page">
+  <!-- Desktop nav -->
+  <div class="topnav">
+    <div class="tn-logo" onclick="doLogout()"><div class="tn-logo-icon">🏗️</div>Diaspo App</div>
+    <div class="tn-sep"></div>
+    <div class="tn-tabs">
+      <button class="tn-tab active" onclick="setDiasporaTab('dashboard',this)">🏠 Tableau de bord</button>
+      <button class="tn-tab" onclick="setDiasporaTab('payments',this)">💳 Paiements</button>
+      <button class="tn-tab" onclick="setDiasporaTab('messages',this)">💬 Messages</button>
+      <button class="tn-tab" onclick="setDiasporaTab('docs',this)">📄 Documents</button>
+      <button class="tn-tab" onclick="setDiasporaTab('colis',this)">📦 Colis</button>
+    </div>
+    <div class="tn-sep"></div>
+    <div class="tn-user"><div class="ava ava-blue">MK</div><span>Mariam K.</span></div>
+    <button class="logout-btn" onclick="doLogout()">Déconnexion</button>
+  </div>
+
+  <!-- Mobile header -->
+  <div class="mobile-header">
+    <div class="mh-logo"><div class="mh-logo-icon">🌍</div>Diaspo App</div>
+    <div class="mh-actions">
+      <div class="mh-notif" onclick="toast('🔔 Vous avez 2 nouvelles notifications')">🔔<div class="mh-notif-dot"></div></div>
+      <div class="ava ava-blue" style="width:36px;height:36px;">MK</div>
+      <div class="mh-logout" onclick="doLogout()" title="Déconnexion">🚪</div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD TAB -->
+  <div class="app-body" id="dtab-dashboard">
+    <div class="alert-box">
+      <div class="ab-icon">💰</div>
+      <div class="ab-text"><h4>Paiement en attente</h4><p>Étape 3 – Élévation des murs · 4 200 000 GNF · Échéance : 05 mars 2025</p></div>
+      <button class="ab-btn" onclick="openPayModal()">Payer maintenant</button>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card" onclick="toast('📊 Avancement global : 47%')">
+        <div class="sc-icon sci-blue">📈</div>
+        <div class="sc-value">47%</div>
+        <div class="sc-label">Avancement global</div>
+        <div class="sc-trend tr-up">↑ +8% ce mois</div>
+      </div>
+      <div class="stat-card" onclick="toast('✅ 3 étapes validées sur 8')">
+        <div class="sc-icon sci-green">✅</div>
+        <div class="sc-value">3/8</div>
+        <div class="sc-label">Étapes validées</div>
+        <div class="sc-trend tr-up">↑ Bonne progression</div>
+      </div>
+      <div class="stat-card" onclick="toast('💰 Total payé : 12 600 000 GNF')">
+        <div class="sc-icon sci-gold">💰</div>
+        <div class="sc-value">12.6M</div>
+        <div class="sc-label">GNF versés</div>
+        <div class="sc-trend tr-neu">→ 3 paiements</div>
+      </div>
+      <div class="stat-card" onclick="toast('📅 Livraison estimée : Juillet 2025')">
+        <div class="sc-icon sci-red">📅</div>
+        <div class="sc-value">4 mois</div>
+        <div class="sc-label">Délai estimé</div>
+        <div class="sc-trend tr-neu">→ Juillet 2025</div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="gcol">
+        <div class="card">
+          <div class="card-title"><span class="ct-dot dot-blue"></span>Avancement du chantier</div>
+          <div class="timeline">
+            <div class="tl" onclick="toast('✅ Préparation terrain – Validée le 10 Jan 2025')">
+              <div class="tl-left"><div class="tl-d td-done"></div><div class="tl-l tl-l-done"></div></div>
+              <div class="tl-r"><h4>Préparation du terrain</h4><p>Terrassement, nivellement, fondations préliminaires</p><span class="tl-badge tb-done">✓ Terminé – 10 Jan 2025</span></div>
+            </div>
+            <div class="tl" onclick="toast('✅ Fondations – Validées le 5 Fév 2025')">
+              <div class="tl-left"><div class="tl-d td-done"></div><div class="tl-l tl-l-done"></div></div>
+              <div class="tl-r"><h4>Fondations</h4><p>Béton armé, dalle de sol, assainissement</p><span class="tl-badge tb-done">✓ Terminé – 5 Fév 2025</span></div>
+            </div>
+            <div class="tl" onclick="toast('🔵 Élévation des murs en cours – 60% complété')">
+              <div class="tl-left"><div class="tl-d td-active"></div><div class="tl-l tl-l-active"></div></div>
+              <div class="tl-r">
+                <h4>Élévation des murs</h4>
+                <p>Murs porteurs, cloisons, linteaux</p>
+                <div style="margin-top:8px;"><div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--text-muted);margin-bottom:4px;"><span>Progression</span><span>60%</span></div><div class="prog-bar"><div class="prog-fill pf-blue" style="width:60%"></div></div></div>
+                <span class="tl-badge tb-active">⟳ En cours</span>
+              </div>
+            </div>
+            <div class="tl" onclick="toast('⏳ Toiture – Pas encore commencée')">
+              <div class="tl-left"><div class="tl-d td-pending"></div><div class="tl-l tl-l-active"></div></div>
+              <div class="tl-r"><h4>Toiture</h4><p>Charpente, couverture, isolation</p><span class="tl-badge tb-pending">⏳ En attente</span></div>
+            </div>
+            <div class="tl" onclick="toast('⏳ Finitions – Pas encore commencées')">
+              <div class="tl-left"><div class="tl-d td-pending"></div></div>
+              <div class="tl-r"><h4>Finitions intérieures & extérieures</h4><p>Enduit, peinture, carrelage, menuiseries</p><span class="tl-badge tb-pending">⏳ En attente</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="ct-dot dot-blue"></span>Messagerie chantier</div>
+          <div class="chat-area" id="chatArea">
+            <div class="cmsg">
+              <div class="cava cava-ag">AG</div>
+              <div><div class="cbubble cb-ag">Bonjour Madame Kouyaté ! Les murs nord et sud sont terminés. La face est sera finie demain. Photos disponibles dans l'espace documents. 📸</div><div class="ctime">Aujourd'hui 09:15</div></div>
+            </div>
+            <div class="cmsg me">
+              <div class="cava cava-me">MK</div>
+              <div><div class="cbubble cb-me">Merci pour la mise à jour ! Les photos de la façade principale sont disponibles ?</div><div class="ctime">Aujourd'hui 09:30</div></div>
+            </div>
+            <div class="cmsg">
+              <div class="cava cava-ag">AG</div>
+              <div><div class="cbubble cb-ag">Oui, elles sont déjà téléversées. Vous pouvez les consulter dans l'onglet Documents. Nous prévoyons de finir les murs d'ici vendredi. 🙏</div><div class="ctime">Aujourd'hui 09:32</div></div>
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <input id="chatInput" class="ti" placeholder="Votre message à l'agence…" onkeydown="if(event.key==='Enter')sendChat()">
+            <button class="chat-send" onclick="sendChat()">✉️</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="gcol">
+        <div class="card">
+          <div class="card-title"><span class="ct-dot dot-gold"></span>Photos du chantier</div>
+          <div class="itabs">
+            <button class="itab on" onclick="switchInner(this,'photos')">📸 Photos</button>
+            <button class="itab" onclick="switchInner(this,'progress')">📊 Détails</button>
+          </div>
+          <div id="inner-photos">
+            <div class="photo-grid">
+              <div class="photo-thumb pt1" onclick="toast('🖼️ Photo 1 – Murs nord – 3 mars 2025')">🧱<div class="photo-overlay">🔍</div></div>
+              <div class="photo-thumb pt2" onclick="toast('🖼️ Photo 2 – Murs sud – 3 mars 2025')">🏗️<div class="photo-overlay">🔍</div></div>
+              <div class="photo-thumb pt3" onclick="toast('🖼️ Photo 3 – Fondations – 5 fév 2025')">🏚️<div class="photo-overlay">🔍</div></div>
+              <div class="photo-thumb pt4" onclick="toast('🖼️ Photo 4 – Coulage béton – 20 jan 2025')">🪨<div class="photo-overlay">🔍</div></div>
+              <div class="photo-thumb pt5" onclick="toast('🖼️ Photo 5 – Terrain nivelé – 10 jan 2025')">🌍<div class="photo-overlay">🔍</div></div>
+              <div class="photo-thumb pt6" onclick="toast('🖼️ Photo 6 – Vue aérienne – 1 mars 2025')">📐<div class="photo-overlay">🔍</div></div>
+            </div>
+            <p style="font-size:0.72rem;color:var(--text-muted);margin-top:10px;text-align:center;">6 photos · Dernière mise à jour : 3 mars 2025</p>
+          </div>
+          <div id="inner-progress" style="display:none">
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div><div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:6px;"><span style="font-weight:600;">Fondations</span><span style="color:var(--green);font-weight:700;">100%</span></div><div class="prog-bar"><div class="prog-fill pf-green" style="width:100%"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:6px;"><span style="font-weight:600;">Murs</span><span style="color:var(--blue);font-weight:700;">60%</span></div><div class="prog-bar"><div class="prog-fill pf-blue" style="width:60%"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:6px;"><span style="font-weight:600;">Toiture</span><span style="color:var(--text-muted);font-weight:700;">0%</span></div><div class="prog-bar"><div class="prog-fill pf-blue" style="width:0%"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:6px;"><span style="font-weight:600;">Finitions</span><span style="color:var(--text-muted);font-weight:700;">0%</span></div><div class="prog-bar"><div class="prog-fill pf-blue" style="width:0%"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="ct-dot dot-green"></span>Dernières notifications</div>
+          <div style="display:flex;flex-direction:column;">
+            <div class="notif-item">
+              <div class="ni-icon" style="background:var(--gold-pale);">💰</div>
+              <div class="ni-content"><div class="ni-title">Demande de paiement reçue</div><div class="ni-desc">Étape 3 – Élévation des murs · 4 200 000 GNF</div><div class="ni-time">Il y a 2h</div></div>
+              <div class="ni-unread"></div>
+            </div>
+            <div class="notif-item">
+              <div class="ni-icon" style="background:var(--blue-pale);">📸</div>
+              <div class="ni-content"><div class="ni-title">Nouvelles photos publiées</div><div class="ni-desc">Alpha a téléversé 3 photos du chantier</div><div class="ni-time">Aujourd'hui 09:10</div></div>
+              <div class="ni-unread"></div>
+            </div>
+            <div class="notif-item">
+              <div class="ni-icon" style="background:rgba(27,122,69,0.1);">✅</div>
+              <div class="ni-content"><div class="ni-title">Étape validée</div><div class="ni-desc">Fondations terminées et vérifiées</div><div class="ni-time">5 Fév 2025</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENTS TAB -->
+  <div class="app-body" id="dtab-payments" style="display:none">
+    <button class="back-btn" onclick="setDiasporaTab('dashboard',null);document.getElementById('mnav-d-dashboard').click()"><span class="back-btn-icon">←</span> Tableau de bord</button>
+    <div class="ph"><div><h2>Mes paiements</h2><p>Historique et paiements en attente</p></div></div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="sc-icon sci-green">✅</div><div class="sc-value">12.6M</div><div class="sc-label">GNF versés</div></div>
+      <div class="stat-card"><div class="sc-icon sci-gold">⏳</div><div class="sc-value">4.2M</div><div class="sc-label">GNF en attente</div></div>
+      <div class="stat-card"><div class="sc-icon sci-blue">📊</div><div class="sc-value">75%</div><div class="sc-label">Budget consommé</div></div>
+      <div class="stat-card"><div class="sc-icon sci-red">💶</div><div class="sc-value">≈ 1 350€</div><div class="sc-label">Total versé</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="ct-dot dot-gold"></span>Demande en cours</div>
+      <div class="alert-box" style="margin-bottom:0;">
+        <div class="ab-icon">💰</div>
+        <div class="ab-text"><h4>Paiement requis : Étape 3</h4><p>Élévation des murs · Photos vérifiées · Devis joint</p></div>
+        <button class="ab-btn" onclick="openPayModal()">Payer 4 200 000 GNF</button>
+      </div>
+    </div>
+    <div class="card" style="margin-top:18px;">
+      <div class="card-title"><span class="ct-dot dot-green"></span>Historique des paiements</div>
+      <div class="pay-list">
+        <div class="pay-row" onclick="toast('📄 Reçu de paiement – Terrain – 2 500 000 GNF')"><div class="pay-ico pi-g">✅</div><div class="pay-info"><div class="pay-name">Préparation terrain</div><div class="pay-date">10 Jan 2025 · Reçu disponible</div></div><div class="pay-amt amt-green">2 500 000 GNF</div></div>
+        <div class="pay-row" onclick="toast('📄 Reçu de paiement – Fondations – 5 600 000 GNF')"><div class="pay-ico pi-g">✅</div><div class="pay-info"><div class="pay-name">Fondations</div><div class="pay-date">5 Fév 2025 · Reçu disponible</div></div><div class="pay-amt amt-green">5 600 000 GNF</div></div>
+        <div class="pay-row" onclick="toast('📄 Reçu de paiement – Matériaux – 4 500 000 GNF')"><div class="pay-ico pi-g">✅</div><div class="pay-info"><div class="pay-name">Matériaux de construction</div><div class="pay-date">20 Fév 2025 · Reçu disponible</div></div><div class="pay-amt amt-green">4 500 000 GNF</div></div>
+        <div class="pay-row" onclick="openPayModal()"><div class="pay-ico pi-o">⏳</div><div class="pay-info"><div class="pay-name">Élévation des murs</div><div class="pay-date">En attente · Échéance 5 mars 2025</div></div><div class="pay-amt amt-gold">4 200 000 GNF</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MESSAGES TAB -->
+  <div class="app-body" id="dtab-messages" style="display:none">
+    <button class="back-btn" onclick="setDiasporaTab('dashboard',null);document.getElementById('mnav-d-dashboard').click()"><span class="back-btn-icon">←</span> Tableau de bord</button>
+    <div class="ph"><div><h2>Messagerie</h2><p>Échanges sécurisés avec l'agence</p></div></div>
+    <div class="card">
+      <div class="card-title"><span class="ct-dot dot-blue"></span>Agence Diaspo App – Conakry</div>
+      <div class="chat-area" id="chatArea2" style="max-height:400px;">
+        <div class="cmsg"><div class="cava cava-ag">AG</div><div><div class="cbubble cb-ag">Bonjour Madame Kouyaté ! Les murs nord et sud sont terminés. La face est sera finie demain. 📸</div><div class="ctime">Aujourd'hui 09:15</div></div></div>
+        <div class="cmsg me"><div class="cava cava-me">MK</div><div><div class="cbubble cb-me">Merci ! Les photos sont disponibles ?</div><div class="ctime">Aujourd'hui 09:30</div></div></div>
+        <div class="cmsg"><div class="cava cava-ag">AG</div><div><div class="cbubble cb-ag">Oui, consultez l'onglet Documents. Nous finissons les murs vendredi. 🙏</div><div class="ctime">Aujourd'hui 09:32</div></div></div>
+        <div class="cmsg me"><div class="cava cava-me">MK</div><div><div class="cbubble cb-me">Parfait. Y a-t-il des problèmes à signaler sur le chantier ?</div><div class="ctime">Aujourd'hui 10:00</div></div></div>
+        <div class="cmsg"><div class="cava cava-ag">AG</div><div><div class="cbubble cb-ag">Tout se passe bien ! Nous avons légèrement accéléré le rythme pour compenser les pluies de la semaine dernière.</div><div class="ctime">Aujourd'hui 10:05</div></div></div>
+      </div>
+      <div class="chat-input-row">
+        <input id="chatInput2" class="ti" placeholder="Écrivez votre message…" onkeydown="if(event.key==='Enter')sendChat2()">
+        <button class="chat-send" onclick="sendChat2()">✉️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOCS TAB -->
+  <div class="app-body" id="dtab-docs" style="display:none">
+    <button class="back-btn" onclick="setDiasporaTab('dashboard',null);document.getElementById('mnav-d-dashboard').click()"><span class="back-btn-icon">←</span> Tableau de bord</button>
+    <div class="ph"><div><h2>Mes documents</h2><p>Tous les fichiers de votre projet</p></div></div>
+    <div class="card">
+      <div class="card-title"><span class="ct-dot dot-blue"></span>Documents administratifs</div>
+      <div class="pay-list">
+        <div class="pay-row" onclick="toast('📄 Téléchargement : Permis de construire.pdf')"><div class="pay-ico pi-b">📋</div><div class="pay-info"><div class="pay-name">Permis de construire</div><div class="pay-date">Uploadé le 8 Jan 2025 · PDF · 2.1 Mo</div></div><button class="act-btn">⬇ Télécharger</button></div>
+        <div class="pay-row" onclick="toast('📄 Téléchargement : Contrat agence.pdf')"><div class="pay-ico pi-g">📝</div><div class="pay-info"><div class="pay-name">Contrat avec l'agence</div><div class="pay-date">Signé le 2 Jan 2025 · PDF · 1.3 Mo</div></div><button class="act-btn">⬇ Télécharger</button></div>
+        <div class="pay-row" onclick="toast('📄 Téléchargement : Devis initial.pdf')"><div class="pay-ico pi-o">💰</div><div class="pay-info"><div class="pay-name">Devis initial</div><div class="pay-date">Émis le 28 Déc 2024 · PDF · 890 Ko</div></div><button class="act-btn">⬇ Télécharger</button></div>
+        <div class="pay-row" onclick="toast('📄 Téléchargement : Reçu paiement 1.pdf')"><div class="pay-ico pi-g">🧾</div><div class="pay-info"><div class="pay-name">Reçu – Préparation terrain</div><div class="pay-date">10 Jan 2025 · PDF · 450 Ko</div></div><button class="act-btn">⬇ Télécharger</button></div>
+        <div class="pay-row" onclick="toast('📄 Téléchargement : Rapport fondations.pdf')"><div class="pay-ico pi-b">📊</div><div class="pay-info"><div class="pay-name">Rapport fondations</div><div class="pay-date">5 Fév 2025 · PDF · 3.2 Mo</div></div><button class="act-btn">⬇ Télécharger</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLIS TAB -->
+  <div class="app-body" id="dtab-colis" style="display:none">
+    <button class="back-btn" onclick="setDiasporaTab('dashboard',null);document.getElementById('mnav-d-dashboard').click()"><span class="back-btn-icon">←</span> Tableau de bord</button>
+    <div class="ph"><div><h2>Transfert de colis</h2><p>Envoyez depuis l'Europe, recevez à Conakry</p></div></div>
+
+    <div class="tracking-card">
+      <div class="tc-label">Suivi colis en cours</div>
+      <div class="tc-id">BL-2025-0047 · Électroménager</div>
+      <div class="tc-steps">
+        <div class="tc-step">
+          <div class="tcs-dot tcs-done">✓</div>
+          <div class="tcs-lbl">Paris<br>Expédié</div>
+        </div>
+        <div class="tc-step">
+          <div class="tcs-dot tcs-done">✓</div>
+          <div class="tcs-lbl">CDG<br>En transit</div>
+        </div>
+        <div class="tc-step">
+          <div class="tcs-dot tcs-active">✈</div>
+          <div class="tcs-lbl">Vol<br>En route</div>
+        </div>
+        <div class="tc-step">
+          <div class="tcs-dot tcs-pending">○</div>
+          <div class="tcs-lbl">Conakry<br>Arrivée</div>
+        </div>
+        <div class="tc-step">
+          <div class="tcs-dot tcs-pending">○</div>
+          <div class="tcs-lbl">Livraison<br>Chantier</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="colis-grid">
+      <div class="colis-card" onclick="toast('📦 Service électroménager sélectionné')">
+        <div class="cc-icon">🔌</div>
+        <div class="cc-title">Électroménager</div>
+        <div class="cc-desc">Frigos, machines à laver, climatiseurs... Livraison directe chantier.</div>
+        <div class="cc-price">À partir de 25€/kg</div>
+      </div>
+      <div class="colis-card" onclick="toast('📦 Service matériaux sélectionné')">
+        <div class="cc-icon">🧱</div>
+        <div class="cc-title">Matériaux spéciaux</div>
+        <div class="cc-desc">Carrelage, sanitaires, robinetterie, quincaillerie haut de gamme.</div>
+        <div class="cc-price">À partir de 30€/kg</div>
+      </div>
+      <div class="colis-card" onclick="toast('📦 Service effets personnels sélectionné')">
+        <div class="cc-icon">🎁</div>
+        <div class="cc-title">Effets personnels</div>
+        <div class="cc-desc">Vêtements, cadeaux, produits pharmaceutiques et cosmétiques.</div>
+        <div class="cc-price">À partir de 18€/kg</div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="card-title"><span class="ct-dot dot-blue"></span>Envoyer un colis</div>
+        <div class="gcol" style="gap:12px;">
+          <div class="form-group"><label>Type de colis</label>
+            <select><option>Électroménager</option><option>Matériaux spéciaux</option><option>Effets personnels</option></select>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Poids estimé (kg)</label><input type="number" placeholder="ex: 25" value="30"></div>
+            <div class="form-group"><label>Valeur déclarée (€)</label><input type="number" placeholder="ex: 500" value="800"></div>
+          </div>
+          <div class="form-group"><label>Description</label><input type="text" placeholder="Frigo Samsung 200L + micro-ondes"></div>
+          <div class="form-group"><label>Adresse de livraison Conakry</label><input type="text" value="Chantier Villa Ratoma – Lot 14, Cité Enco-5"></div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn-outline">Calculer le tarif</button>
+            <button class="btn-primary" onclick="toast('✅ Demande de colis enregistrée ! Référence BL-2025-0048')">Envoyer la demande</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ct-dot dot-gold"></span>Historique des envois</div>
+        <div class="pay-list">
+          <div class="pay-row" onclick="toast('📦 Colis BL-2025-0047 – Électroménager – En vol')"><div class="pay-ico" style="background:rgba(200,146,42,0.1);">✈️</div><div class="pay-info"><div class="pay-name">BL-2025-0047 · Électroménager</div><div class="pay-date">Expédié Paris · 28 Fév 2025 · 30 kg</div></div><span class="pill p-gold">En vol</span></div>
+          <div class="pay-row" onclick="toast('📦 Colis BL-2025-0031 – Livré à Conakry')"><div class="pay-ico pi-g">✅</div><div class="pay-info"><div class="pay-name">BL-2025-0031 · Carrelage</div><div class="pay-date">Livré le 10 Fév 2025 · 45 kg</div></div><span class="pill p-green">Livré</span></div>
+          <div class="pay-row" onclick="toast('📦 Colis BL-2025-0018 – Livré à Conakry')"><div class="pay-ico pi-g">✅</div><div class="pay-info"><div class="pay-name">BL-2025-0018 · Sanitaires</div><div class="pay-date">Livré le 15 Jan 2025 · 28 kg</div></div><span class="pill p-green">Livré</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE BOTTOM NAV – DIASPORA -->
+  <nav class="mobile-nav">
+    <div class="mnav-inner">
+      <button class="mnav-item active" id="mnav-d-dashboard" onclick="setDiasporaTab('dashboard',this);setMobileNav('d','dashboard')">
+        <div class="mnav-icon">🏠</div><span class="mnav-label">Accueil</span>
+      </button>
+      <button class="mnav-item" id="mnav-d-payments" onclick="setDiasporaTab('payments',this);setMobileNav('d','payments')">
+        <div class="mnav-icon">💳<span class="mnav-badge">1</span></div><span class="mnav-label">Paiements</span>
+      </button>
+      <button class="mnav-item" id="mnav-d-messages" onclick="setDiasporaTab('messages',this);setMobileNav('d','messages')">
+        <div class="mnav-icon">💬<span class="mnav-badge">2</span></div><span class="mnav-label">Messages</span>
+      </button>
+      <button class="mnav-item" id="mnav-d-docs" onclick="setDiasporaTab('docs',this);setMobileNav('d','docs')">
+        <div class="mnav-icon">📄</div><span class="mnav-label">Docs</span>
+      </button>
+      <button class="mnav-item" id="mnav-d-colis" onclick="setDiasporaTab('colis',this);setMobileNav('d','colis')">
+        <div class="mnav-icon">📦</div><span class="mnav-label">Colis</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!--  PAGE 3 – AGENCE                        -->
+<!-- ════════════════════════════════════════ -->
+<div id="page-agence" class="page">
+  <div class="topnav">
+    <div class="tn-logo" onclick="doLogout()"><div class="tn-logo-icon">🏗️</div>Diaspo App</div>
+    <div class="tn-sep"></div>
+    <div class="tn-tabs">
+      <button class="tn-tab active" onclick="setAgenceTab('projects',this)">🏗️ Projets</button>
+      <button class="tn-tab" onclick="setAgenceTab('update',this)">📸 Mise à jour</button>
+      <button class="tn-tab" onclick="setAgenceTab('payments',this)">💰 Paiements</button>
+      <button class="tn-tab" onclick="setAgenceTab('colis-agence',this)">📦 Colis</button>
+      <button class="tn-tab" onclick="setAgenceTab('chat-agence',this)">💬 Messages</button>
+    </div>
+    <div class="tn-sep"></div>
+    <div class="tn-user"><div class="ava ava-green">AK</div><span>Alpha K.</span></div>
+    <button class="logout-btn" onclick="doLogout()">Déconnexion</button>
+  </div>
+
+  <div class="mobile-header">
+    <div class="mh-logo"><div class="mh-logo-icon">🌍</div>Agence</div>
+    <div class="mh-actions">
+      <div class="mh-notif" onclick="toast('🔔 3 nouvelles demandes client')">🔔<div class="mh-notif-dot"></div></div>
+      <div class="ava ava-green" style="width:36px;height:36px;">AK</div>
+      <div class="mh-logout" onclick="doLogout()" title="Déconnexion">🚪</div>
+    </div>
+  </div>
+
+  <!-- PROJECTS TAB -->
+  <div class="app-body" id="atab-projects">
+    <div class="ph">
+      <div><h2>Gestion des projets</h2><p>4 projets actifs · Mars 2025</p></div>
+      <button class="btn-primary" onclick="toast('➕ Nouveau projet créé')">+ Nouveau projet</button>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="sc-icon sci-blue">🏗️</div><div class="sc-value">4</div><div class="sc-label">Projets actifs</div></div>
+      <div class="stat-card"><div class="sc-icon sci-gold">⏳</div><div class="sc-value">2</div><div class="sc-label">Paiements en attente</div></div>
+      <div class="stat-card"><div class="sc-icon sci-green">✅</div><div class="sc-value">1</div><div class="sc-label">Livraison ce mois</div></div>
+      <div class="stat-card"><div class="sc-icon sci-red">🚨</div><div class="sc-value">1</div><div class="sc-label">Retard signalé</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="ct-dot dot-blue"></span>Liste des projets</div>
+      <div style="overflow-x:auto;">
+        <table class="tbl">
+          <thead><tr><th>Client</th><th>Projet</th><th>Étape</th><th>Avancement</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr onclick="setAgenceTab('update',null)">
+              <td><div style="display:flex;align-items:center;gap:8px;"><div class="ava ava-blue" style="width:30px;height:30px;font-size:0.7rem;">MK</div><div><div class="proj-name">Mariam Kouyaté</div><div style="font-size:0.72rem;color:var(--text-muted);">Paris, France</div></div></div></td>
+              <td>Villa Ratoma</td>
+              <td>Murs (Étape 3)</td>
+              <td><div style="min-width:80px;"><div style="font-size:0.75rem;color:var(--blue);font-weight:700;margin-bottom:3px;">47%</div><div class="prog-bar"><div class="prog-fill pf-blue" style="width:47%"></div></div></div></td>
+              <td><span class="pill p-blue">En cours</span></td>
+              <td><button class="act-btn" onclick="event.stopPropagation();setAgenceTab('update',null);toast('📸 Mise à jour Mariam Kouyaté')">Mettre à jour</button></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div class="ava" style="background:linear-gradient(135deg,#0891B2,#22D3EE);width:30px;height:30px;font-size:0.7rem;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;">ID</div><div><div class="proj-name">Ibrahima Diallo</div><div style="font-size:0.72rem;color:var(--text-muted);">Lyon, France</div></div></div></td>
+              <td>Maison Dixinn</td>
+              <td>Finitions</td>
+              <td><div style="min-width:80px;"><div style="font-size:0.75rem;color:var(--green);font-weight:700;margin-bottom:3px;">90%</div><div class="prog-bar"><div class="prog-fill pf-green" style="width:90%"></div></div></div></td>
+              <td><span class="pill p-green">Livraison proche</span></td>
+              <td><button class="act-btn" onclick="toast('📸 Mise à jour Ibrahima Diallo')">Mettre à jour</button></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div class="ava" style="background:linear-gradient(135deg,#D97706,#FCD34D);color:#000;width:30px;height:30px;font-size:0.7rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">AB</div><div><div class="proj-name">Aissatou Barry</div><div style="font-size:0.72rem;color:var(--text-muted);">Montréal, Canada</div></div></div></td>
+              <td>Duplex Kaloum</td>
+              <td>Fondations</td>
+              <td><div style="min-width:80px;"><div style="font-size:0.75rem;color:var(--red);font-weight:700;margin-bottom:3px;">15% – Retard</div><div class="prog-bar"><div class="prog-fill" style="width:15%;background:var(--red);border-radius:4px;height:100%;"></div></div></div></td>
+              <td><span class="pill p-red">Retard 12j</span></td>
+              <td><button class="act-btn" onclick="toast('📞 Appel en cours – Aissatou Barry')">Contacter</button></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div class="ava ava-gold" style="width:30px;height:30px;font-size:0.7rem;">MB</div><div><div class="proj-name">Mamadou Bah</div><div style="font-size:0.72rem;color:var(--text-muted);">Bruxelles, Belgique</div></div></div></td>
+              <td>Villa Kipé</td>
+              <td>Toiture</td>
+              <td><div style="min-width:80px;"><div style="font-size:0.75rem;color:var(--gold);font-weight:700;margin-bottom:3px;">65%</div><div class="prog-bar"><div class="prog-fill pf-gold" style="width:65%"></div></div></div></td>
+              <td><span class="pill p-gold">Paiement attendu</span></td>
+              <td><button class="act-btn" onclick="toast('💰 Relance de paiement envoyée – Mamadou Bah')">Relancer</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPDATE TAB -->
+  <div class="app-body" id="atab-update" style="display:none">
+    <button class="back-btn" onclick="setAgenceTab('projects',null)"><span class="back-btn-icon">←</span> Retour aux projets</button>
+    <div class="ph"><div><h2>Mise à jour chantier</h2><p>Mariam Kouyaté · Villa Ratoma</p></div></div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-title"><span class="ct-dot dot-blue"></span>Déposer des photos</div>
+        <div class="upload-drop" onclick="toast('📁 Sélecteur de fichiers ouvert (simulation)')">
+          <div class="ud-icon">📸</div>
+          <div class="ud-text"><strong>Cliquez pour sélectionner</strong> ou glissez vos photos<br>JPG, PNG · 10 Mo max par photo</div>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+          <div style="background:var(--bg2);border-radius:8px;padding:6px 10px;font-size:0.75rem;color:var(--text-mid);display:flex;align-items:center;gap:6px;">🏗️ murs_nord_03mars.jpg <span style="color:var(--red);cursor:pointer;" onclick="toast('Photo supprimée')">✕</span></div>
+          <div style="background:var(--bg2);border-radius:8px;padding:6px 10px;font-size:0.75rem;color:var(--text-mid);display:flex;align-items:center;gap:6px;">🏗️ murs_sud_03mars.jpg <span style="color:var(--red);cursor:pointer;" onclick="toast('Photo supprimée')">✕</span></div>
+          <div style="background:var(--bg2);border-radius:8px;padding:6px 10px;font-size:0.75rem;color:var(--text-mid);display:flex;align-items:center;gap:6px;">🏗️ facade_principale.jpg <span style="color:var(--red);cursor:pointer;" onclick="toast('Photo supprimée')">✕</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ct-dot dot-gold"></span>Note de chantier</div>
+        <div class="gcol" style="gap:12px;">
+          <div class="form-group"><label>Étape actuelle</label>
+            <select><option>Élévation des murs (60%)</option><option>Toiture</option><option>Finitions</option></select>
+          </div>
+          <div class="form-group"><label>Pourcentage d'avancement</label>
+            <input type="range" min="0" max="100" value="60" oninput="toast('📊 Avancement mis à jour : '+this.value+'%')" style="width:100%;accent-color:var(--blue);">
+          </div>
+          <div class="form-group"><label>Commentaire</label>
+            <textarea class="ti" rows="4" placeholder="Décrivez l'avancement…">Les murs du rez-de-chaussée avancent bien. Nous avons terminé la face nord et sud. La face est sera terminée demain.</textarea>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn-outline" onclick="setAgenceTab('projects',null)">Annuler</button>
+            <button class="btn-primary" onclick="toast('✅ Mise à jour envoyée à Mariam Kouyaté avec notification !')">Envoyer mise à jour</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:18px;">
+      <div class="card-title"><span class="ct-dot dot-green"></span>Demander un paiement</div>
+      <div class="form-row">
+        <div class="form-group"><label>Étape à facturer</label><select><option>Élévation des murs</option><option>Toiture</option><option>Finitions</option></select></div>
+        <div class="form-group"><label>Montant (GNF)</label><input type="text" value="4 200 000"></div>
+        <div class="form-group"><label>Joindre devis (PDF)</label><input type="file" accept=".pdf" style="font-size:0.82rem;"></div>
+        <button class="btn-primary" style="white-space:nowrap;" onclick="toast('📤 Demande de paiement 4 200 000 GNF envoyée à Mariam Kouyaté avec notification SMS + email !')">Envoyer la demande</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENTS TAB AGENCE -->
+  <div class="app-body" id="atab-payments" style="display:none">
+    <button class="back-btn" onclick="setAgenceTab('projects',null)"><span class="back-btn-icon">←</span> Retour aux projets</button>
+    <div class="ph"><div><h2>Demandes de paiement</h2><p>Gérer et envoyer des demandes aux clients</p></div></div>
+    <div class="card" style="margin-bottom:18px;">
+      <div class="card-title"><span class="ct-dot dot-gold"></span>Créer une demande de paiement</div>
+      <div class="form-row">
+        <div class="form-group"><label>Client</label><select><option>Mariam Kouyaté</option><option>Ibrahima Diallo</option><option>Aissatou Barry</option><option>Mamadou Bah</option></select></div>
+        <div class="form-group"><label>Étape</label><select><option>Élévation des murs</option><option>Toiture</option><option>Finitions</option></select></div>
+        <div class="form-group"><label>Montant (GNF)</label><input type="text" value="4 200 000"></div>
+        <button class="btn-primary" style="white-space:nowrap;" onclick="toast('📤 Demande de paiement envoyée à Mariam Kouyaté !')">Envoyer</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="ct-dot dot-blue"></span>Demandes récentes</div>
+      <div class="pay-list">
+        <div class="pay-row"><div class="pay-ico pi-o">⏳</div><div class="pay-info"><div class="pay-name">Mariam Kouyaté – Murs</div><div class="pay-date">Envoyée le 28 Fév 2025 · En attente</div></div><div class="pay-amt amt-gold">4 200 000 GNF</div></div>
+        <div class="pay-row"><div class="pay-ico pi-o">⏳</div><div class="pay-info"><div class="pay-name">Mamadou Bah – Toiture</div><div class="pay-date">Envoyée le 1 Mars 2025 · En attente</div></div><div class="pay-amt amt-gold">4 800 000 GNF</div></div>
+        <div class="pay-row"><div class="pay-ico pi-g">✅</div><div class="pay-info"><div class="pay-name">Ibrahima Diallo – Finitions</div><div class="pay-date">Payée le 25 Fév 2025</div></div><div class="pay-amt amt-green">5 500 000 GNF</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLIS AGENCE TAB -->
+  <div class="app-body" id="atab-colis-agence" style="display:none">
+    <button class="back-btn" onclick="setAgenceTab('projects',null)"><span class="back-btn-icon">←</span> Retour aux projets</button>
+    <div class="ph"><div><h2>Gestion des colis</h2><p>Réception et livraison à Conakry</p></div></div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="sc-icon sci-gold">✈️</div><div class="sc-value">3</div><div class="sc-label">En transit</div></div>
+      <div class="stat-card"><div class="sc-icon sci-blue">📦</div><div class="sc-value">1</div><div class="sc-label">À récupérer</div></div>
+      <div class="stat-card"><div class="sc-icon sci-green">🚚</div><div class="sc-value">2</div><div class="sc-label">En livraison</div></div>
+      <div class="stat-card"><div class="sc-icon sci-red">⚠️</div><div class="sc-value">1</div><div class="sc-label">Problème douane</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="ct-dot dot-blue"></span>Colis en cours</div>
+      <div class="pay-list">
+        <div class="pay-row" onclick="toast('📦 BL-2025-0047 – Détail : Électroménager 30kg · Paris → Conakry · Vol AF642')"><div class="pay-ico" style="background:rgba(200,146,42,0.1);">✈️</div><div class="pay-info"><div class="pay-name">BL-2025-0047 · Mariam Kouyaté</div><div class="pay-date">Électroménager 30kg · En vol · Arr. prévue 6 Mars</div></div><span class="pill p-gold">En vol</span></div>
+        <div class="pay-row" onclick="toast('📦 BL-2025-0049 – À récupérer à l\'aéroport')"><div class="pay-ico pi-b">🛬</div><div class="pay-info"><div class="pay-name">BL-2025-0049 · Ibrahima Diallo</div><div class="pay-date">Sanitaires 28kg · Arrivé · En attente de dédouanement</div></div><span class="pill p-blue">À récupérer</span></div>
+        <div class="pay-row" onclick="toast('📦 BL-2025-0050 – En cours de livraison au chantier')"><div class="pay-ico pi-g">🚚</div><div class="pay-info"><div class="pay-name">BL-2025-0050 · Mamadou Bah</div><div class="pay-date">Carrelage 45kg · Livraison chantier en cours</div></div><span class="pill p-green">En livraison</span></div>
+        <div class="pay-row" onclick="toast('⚠️ BL-2025-0046 – Problème douane : documents manquants')"><div class="pay-ico pi-r">⚠️</div><div class="pay-info"><div class="pay-name">BL-2025-0046 · Aissatou Barry</div><div class="pay-date">Quincaillerie · Documents douane manquants</div></div><span class="pill p-red">Bloqué</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT AGENCE TAB -->
+  <div class="app-body" id="atab-chat-agence" style="display:none">
+    <button class="back-btn" onclick="setAgenceTab('projects',null)"><span class="back-btn-icon">←</span> Retour aux projets</button>
+    <div class="ph"><div><h2>Messagerie clients</h2><p>Échanges avec la diaspora</p></div></div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-title"><span class="ct-dot dot-blue"></span>Conversations</div>
+        <div class="usr-list">
+          <div class="usr-row" style="background:var(--blue-pale);border:1px solid var(--blue-light);" onclick="toast('💬 Conversation Mariam Kouyaté ouverte')"><div class="ava ava-blue" style="width:38px;height:38px;font-size:0.8rem;">MK</div><div class="usr-info"><div class="usr-name">Mariam Kouyaté</div><div class="usr-sub">Les photos sont disponibles ?</div></div><span class="pill p-blue">2 non lus</span></div>
+          <div class="usr-row" onclick="toast('💬 Conversation Ibrahima Diallo ouverte')"><div class="ava" style="background:linear-gradient(135deg,#0891B2,#22D3EE);width:38px;height:38px;font-size:0.8rem;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;">ID</div><div class="usr-info"><div class="usr-name">Ibrahima Diallo</div><div class="usr-sub">Ok merci pour la mise à jour</div></div><div style="font-size:0.72rem;color:var(--text-muted);">Hier</div></div>
+          <div class="usr-row" onclick="toast('💬 Conversation Aissatou Barry ouverte')"><div class="ava" style="background:linear-gradient(135deg,#D97706,#FCD34D);color:#000;width:38px;height:38px;font-size:0.8rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">AB</div><div class="usr-info"><div class="usr-name">Aissatou Barry</div><div class="usr-sub">Quand reprennent les travaux ?</div></div><span class="pill p-red">1 urgent</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ct-dot dot-green"></span>Mariam Kouyaté</div>
+        <div class="chat-area" id="chatAreaAgence" style="max-height:300px;">
+          <div class="cmsg"><div class="cava cava-me">MK</div><div><div class="cbubble cb-me">Les photos du chantier sont disponibles ?</div><div class="ctime">Aujourd'hui 09:30</div></div></div>
+          <div class="cmsg me"><div class="cava cava-ag">AG</div><div><div class="cbubble cb-ag">Bonjour ! Oui, 3 nouvelles photos viennent d'être téléversées. Consultez l'onglet Documents 📸</div><div class="ctime">Aujourd'hui 09:32</div></div></div>
+        </div>
+        <div class="chat-input-row">
+          <input id="chatInputAgence" class="ti" placeholder="Répondre à Mariam…" onkeydown="if(event.key==='Enter')sendChatAgence()">
+          <button class="chat-send" onclick="sendChatAgence()">✉️</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE BOTTOM NAV – AGENCE -->
+  <nav class="mobile-nav">
+    <div class="mnav-inner">
+      <button class="mnav-item active" onclick="setAgenceTab('projects',this);setMobileNav('a','projects')">
+        <div class="mnav-icon">🏗️</div><span class="mnav-label">Projets</span>
+      </button>
+      <button class="mnav-item" onclick="setAgenceTab('update',this);setMobileNav('a','update')">
+        <div class="mnav-icon">📸</div><span class="mnav-label">Chantier</span>
+      </button>
+      <button class="mnav-item" onclick="setAgenceTab('payments',this);setMobileNav('a','payments')">
+        <div class="mnav-icon">💰<span class="mnav-badge">2</span></div><span class="mnav-label">Paiements</span>
+      </button>
+      <button class="mnav-item" onclick="setAgenceTab('colis-agence',this);setMobileNav('a','colis-agence')">
+        <div class="mnav-icon">📦</div><span class="mnav-label">Colis</span>
+      </button>
+      <button class="mnav-item" onclick="setAgenceTab('chat-agence',this);setMobileNav('a','chat-agence')">
+        <div class="mnav-icon">💬<span class="mnav-badge">3</span></div><span class="mnav-label">Messages</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!--  PAGE 4 – ADMIN                         -->
+<!-- ════════════════════════════════════════ -->
+<div id="page-admin" class="page">
+  <div class="topnav">
+    <div class="tn-logo" onclick="doLogout()"><div class="tn-logo-icon">🏗️</div>Diaspo App</div>
+    <div class="tn-sep"></div>
+    <div style="font-size:0.82rem;color:var(--text-muted);background:var(--bg);padding:6px 14px;border-radius:8px;border:1px solid var(--border);">⚙️ Back-Office Administrateur</div>
+    <div class="tn-sep"></div>
+    <button class="btn-primary" onclick="toast('📊 Export PDF en cours de génération… Téléchargement dans 3s')">⬇ Exporter rapport</button>
+    <div class="tn-user" style="margin-left:8px;"><div class="ava ava-gold">AD</div><span>Admin</span></div>
+    <button class="logout-btn" onclick="doLogout()">Déconnexion</button>
+  </div>
+
+  <div class="mobile-header">
+    <div class="mh-logo"><div class="mh-logo-icon">🌍</div>Admin</div>
+    <div class="mh-actions">
+      <button class="btn-primary" style="font-size:0.75rem;padding:7px 12px;" onclick="toast('📊 Export PDF lancé')">⬇ Export</button>
+      <div class="mh-logout" onclick="doLogout()" title="Déconnexion">🚪</div>
+    </div>
+  </div>
+
+  <div class="app-body" id="admin-main">
+    <div class="flag-stripe" style="margin-bottom:18px;"></div>
+    <div class="ph"><div><h2>Tableau de bord Admin</h2><p>Vue globale · Mars 2025</p></div></div>
+    <div class="admin-layout">
+      <div class="aside">
+        <div style="margin-bottom:16px;">
+          <div class="aside-label">Principal</div>
+          <div class="aside-item on" onclick="showAdminSection('dashboard',this)"><span class="aside-icon">📊</span>Tableau de bord</div>
+          <div class="aside-item" onclick="showAdminSection('projects',this)"><span class="aside-icon">🏗️</span>Tous les projets</div>
+          <div class="aside-item" onclick="showAdminSection('finances',this)"><span class="aside-icon">💰</span>Finances</div>
+          <div class="aside-item" onclick="showAdminSection('colis-admin',this)"><span class="aside-icon">📦</span>Colis & Transferts</div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <div class="aside-label">Gestion</div>
+          <div class="aside-item" onclick="showAdminSection('users',this)"><span class="aside-icon">👥</span>Utilisateurs<span class="aside-badge">24</span></div>
+          <div class="aside-item" onclick="showAdminSection('notifications',this)"><span class="aside-icon">🔔</span>Notifications<span class="aside-badge">7</span></div>
+        </div>
+        <div>
+          <div class="aside-label">Système</div>
+          <div class="aside-item" onclick="showAdminSection('exports',this)"><span class="aside-icon">📤</span>Exports CSV/PDF</div>
+          <div class="aside-item" onclick="toast('🔒 Sécurité & 2FA – Tout est actif')"><span class="aside-icon">🔒</span>Sécurité & 2FA</div>
+        </div>
+      </div>
+
+      <div class="gcol" id="admin-content">
+
+        <!-- DASHBOARD SECTION -->
+        <div id="as-dashboard">
+          <div class="kpi-row">
+            <div class="kpi" onclick="showAdminSection('projects',document.querySelector('.aside-item:nth-child(2)'))"><div class="kpi-num" style="color:var(--blue)">7</div><div class="kpi-lbl">Projets actifs</div></div>
+            <div class="kpi" onclick="showAdminSection('users',null)"><div class="kpi-num" style="color:var(--dark)">24</div><div class="kpi-lbl">Clients inscrits</div></div>
+            <div class="kpi" onclick="toast('😊 Satisfaction client : 89% – Excellent !')"><div class="kpi-num" style="color:var(--green)">89%</div><div class="kpi-lbl">Satisfaction</div></div>
+            <div class="kpi" onclick="toast('🚨 2 projets en retard – Voir section Projets')"><div class="kpi-num" style="color:var(--red)">2</div><div class="kpi-lbl">Alertes retard</div></div>
+          </div>
+          <div class="g2">
+            <div class="card">
+              <div class="card-title"><span class="ct-dot dot-blue"></span>Paiements reçus (GNF M)</div>
+              <div class="bars">
+                <div class="bar-wrap"><div class="bar" style="height:45px"><div class="bar-tip">5.2M</div></div><div class="bar-lbl">Oct</div></div>
+                <div class="bar-wrap"><div class="bar" style="height:62px"><div class="bar-tip">7.1M</div></div><div class="bar-lbl">Nov</div></div>
+                <div class="bar-wrap"><div class="bar" style="height:50px"><div class="bar-tip">5.8M</div></div><div class="bar-lbl">Déc</div></div>
+                <div class="bar-wrap"><div class="bar" style="height:82px"><div class="bar-tip">9.4M</div></div><div class="bar-lbl">Jan</div></div>
+                <div class="bar-wrap"><div class="bar" style="height:70px"><div class="bar-tip">8.1M</div></div><div class="bar-lbl">Fév</div></div>
+                <div class="bar-wrap"><div class="bar" style="height:110px"><div class="bar-tip">12.6M</div></div><div class="bar-lbl">Mars</div></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title"><span class="ct-dot dot-red"></span>Alertes actives</div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div class="pay-row" onclick="toast('📞 Appel vers chef de chantier – Kaloum')"><div class="pay-ico pi-r">🚨</div><div class="pay-info"><div class="pay-name">Retard – Aissatou Barry</div><div class="pay-date">Fondations : 12j de retard · Kaloum</div></div><button class="act-btn">Contacter</button></div>
+                <div class="pay-row" onclick="toast('📤 Relance envoyée à Mamadou Bah')"><div class="pay-ico pi-o">⚠️</div><div class="pay-info"><div class="pay-name">Paiement en suspens</div><div class="pay-date">Mamadou Bah · 4.8M GNF</div></div><button class="act-btn">Relancer</button></div>
+                <div class="pay-row" onclick="toast('📋 Document manquant – Ibrahima Diallo')"><div class="pay-ico pi-b">📋</div><div class="pay-info"><div class="pay-name">Document manquant</div><div class="pay-date">Permis · Ibrahima Diallo · Dixinn</div></div><button class="act-btn">Résoudre</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="ct-dot dot-green"></span>Utilisateurs récents</div>
+            <div class="usr-list">
+              <div class="usr-row" onclick="toast('👤 Profil Mariam Kouyaté – Paris')"><div class="ava ava-blue" style="width:38px;height:38px;font-size:0.8rem;">MK</div><div class="usr-info"><div class="usr-name">Mariam Kouyaté</div><div class="usr-sub">Diaspora · Paris, France · Projet actif</div></div><span class="pill p-green">Actif</span></div>
+              <div class="usr-row" onclick="toast('👤 Profil Ibrahima Diallo – Lyon')"><div class="ava" style="background:linear-gradient(135deg,#0891B2,#22D3EE);width:38px;height:38px;font-size:0.8rem;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;">ID</div><div class="usr-info"><div class="usr-name">Ibrahima Diallo</div><div class="usr-sub">Diaspora · Lyon, France · Livraison imminente</div></div><span class="pill p-green">Actif</span></div>
+              <div class="usr-row" onclick="toast('👤 Profil Aissatou Barry – Montréal')"><div class="ava" style="background:linear-gradient(135deg,#D97706,#FCD34D);color:#000;width:38px;height:38px;font-size:0.8rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">AB</div><div class="usr-info"><div class="usr-name">Aissatou Barry</div><div class="usr-sub">Diaspora · Montréal, Canada · Retard signalé</div></div><span class="pill p-red">Alerte</span></div>
+              <div class="usr-row" onclick="toast('👤 Alpha Kouyaté – Chef de chantier')"><div class="ava ava-green" style="width:38px;height:38px;font-size:0.8rem;">AK</div><div class="usr-info"><div class="usr-name">Alpha Kouyaté</div><div class="usr-sub">Chef de chantier · Agence Conakry</div></div><span class="pill p-blue">Agent</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECTS SECTION -->
+        <div id="as-projects" style="display:none">
+          <div class="ph"><div><h2>Tous les projets</h2><p>7 projets en cours · Mars 2025</p></div><button class="btn-primary" onclick="toast('➕ Nouveau projet créé')">+ Nouveau projet</button></div>
+          <div class="card">
+            <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+              <button class="act-btn" style="background:var(--blue);color:white;" onclick="toast('🔵 Filtre : Tous')">Tous (7)</button>
+              <button class="act-btn" onclick="toast('🟢 Filtre : En cours (4)')">En cours (4)</button>
+              <button class="act-btn" onclick="toast('🟡 Filtre : Paiement attendu (2)')">Paiement attendu (2)</button>
+              <button class="act-btn" onclick="toast('🔴 Filtre : Retard (1)')">Retard (1)</button>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="tbl">
+                <thead><tr><th>Client</th><th>Projet</th><th>Localisation</th><th>Avancement</th><th>Statut</th><th>Responsable</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr onclick="toast('📂 Projet Mariam Kouyaté ouvert')"><td><div class="proj-name">Mariam Kouyaté</div><div style="font-size:0.72rem;color:var(--text-muted);">Paris, France</div></td><td>Villa Ratoma</td><td>Ratoma, Conakry</td><td><div style="font-size:0.75rem;color:var(--blue);font-weight:700;">47%</div></td><td><span class="pill p-blue">En cours</span></td><td>Alpha K.</td><td><button class="act-btn" onclick="event.stopPropagation();toast('📋 Fiche projet ouverte')">Voir</button></td></tr>
+                  <tr onclick="toast('📂 Projet Ibrahima Diallo ouvert')"><td><div class="proj-name">Ibrahima Diallo</div><div style="font-size:0.72rem;color:var(--text-muted);">Lyon, France</div></td><td>Maison Dixinn</td><td>Dixinn, Conakry</td><td><div style="font-size:0.75rem;color:var(--green);font-weight:700;">90%</div></td><td><span class="pill p-green">Livraison proche</span></td><td>Mamadou S.</td><td><button class="act-btn" onclick="event.stopPropagation();toast('📋 Fiche projet ouverte')">Voir</button></td></tr>
+                  <tr onclick="toast('📂 Projet Aissatou Barry ouvert')"><td><div class="proj-name">Aissatou Barry</div><div style="font-size:0.72rem;color:var(--text-muted);">Montréal, Canada</div></td><td>Duplex Kaloum</td><td>Kaloum, Conakry</td><td><div style="font-size:0.75rem;color:var(--red);font-weight:700;">15%</div></td><td><span class="pill p-red">Retard 12j</span></td><td>Ibrahima D.</td><td><button class="act-btn" onclick="event.stopPropagation();toast('📞 Appel chef de chantier')">Contacter</button></td></tr>
+                  <tr onclick="toast('📂 Projet Mamadou Bah ouvert')"><td><div class="proj-name">Mamadou Bah</div><div style="font-size:0.72rem;color:var(--text-muted);">Bruxelles, Belgique</div></td><td>Villa Kipé</td><td>Kipé, Conakry</td><td><div style="font-size:0.75rem;color:var(--gold);font-weight:700;">65%</div></td><td><span class="pill p-gold">Paiement attendu</span></td><td>Alpha K.</td><td><button class="act-btn" onclick="event.stopPropagation();toast('💰 Relance envoyée')">Relancer</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- FINANCES SECTION -->
+        <div id="as-finances" style="display:none">
+          <div class="ph"><div><h2>Tableau financier</h2><p>Récapitulatif comptable · Mars 2025</p></div></div>
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-num" style="color:var(--green)">48.4M</div><div class="kpi-lbl">GNF reçus (total)</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--gold)">9.0M</div><div class="kpi-lbl">GNF en attente</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--blue)">≈ 5 180€</div><div class="kpi-lbl">Équivalent EUR</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--dark)">7.2%</div><div class="kpi-lbl">Commission agence</div></div>
+          </div>
+          <div class="g2">
+            <div class="card">
+              <div class="card-title"><span class="ct-dot dot-blue"></span>Évolution mensuelle (GNF M)</div>
+              <div class="bars">
+                <div class="bar-wrap"><div class="bar" style="height:45px"><div class="bar-tip">5.2</div></div><div class="bar-lbl">Oct</div></div>
+                <div class="bar-wrap"><div class="bar" style="height:62px"><div class="bar-tip">7.1</div></div><div class="bar-lbl">Nov</div></div>
+                <div class="bar-wrap"><div class="bar" style="height:50px"><div class="bar-tip">5.8</div></div><div class="bar-lbl">Déc</div></div>
+                <div class="bar-wrap"><div class="bar" style="height:82px"><div class="bar-tip">9.4</div></div><div class="bar-lbl">Jan</div></div>
+                <div class="bar-wrap"><div class="bar" style="height:70px"><div class="bar-tip">8.1</div></div><div class="bar-lbl">Fév</div></div>
+                <div class="bar-wrap"><div class="bar" style="height:110px"><div class="bar-tip">12.6</div></div><div class="bar-lbl">Mars</div></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title"><span class="ct-dot dot-gold"></span>Répartition par projet</div>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div><div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:4px;"><span style="font-weight:600;">Mariam Kouyaté</span><span style="color:var(--text-muted);">12.6M GNF</span></div><div class="prog-bar"><div class="prog-fill pf-blue" style="width:70%"></div></div></div>
+                <div><div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:4px;"><span style="font-weight:600;">Ibrahima Diallo</span><span style="color:var(--text-muted);">18.2M GNF</span></div><div class="prog-bar"><div class="prog-fill pf-green" style="width:90%"></div></div></div>
+                <div><div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:4px;"><span style="font-weight:600;">Mamadou Bah</span><span style="color:var(--text-muted);">9.8M GNF</span></div><div class="prog-bar"><div class="prog-fill pf-gold" style="width:55%"></div></div></div>
+                <div><div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:4px;"><span style="font-weight:600;">Aissatou Barry</span><span style="color:var(--text-muted);">7.8M GNF</span></div><div class="prog-bar"><div class="prog-fill" style="width:40%;background:var(--red);border-radius:4px;height:100%;"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLIS ADMIN SECTION -->
+        <div id="as-colis-admin" style="display:none">
+          <div class="ph"><div><h2>Colis & Transferts</h2><p>Gestion globale des envois</p></div></div>
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-num" style="color:var(--gold)">8</div><div class="kpi-lbl">En transit</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--green)">34</div><div class="kpi-lbl">Livrés ce mois</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--blue)">1 240 kg</div><div class="kpi-lbl">Volume total</div></div>
+            <div class="kpi"><div class="kpi-num" style="color:var(--red)">2</div><div class="kpi-lbl">Problèmes douane</div></div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="ct-dot dot-blue"></span>Tous les colis en cours</div>
+            <div class="pay-list">
+              <div class="pay-row" onclick="toast('📦 BL-2025-0047 – Mariam – Électroménager – En vol AF642')"><div class="pay-ico" style="background:rgba(200,146,42,0.1);">✈️</div><div class="pay-info"><div class="pay-name">BL-2025-0047 · Mariam Kouyaté</div><div class="pay-date">30kg · Paris → Conakry · Arr. 6 Mars</div></div><span class="pill p-gold">En vol</span></div>
+              <div class="pay-row" onclick="toast('📦 BL-2025-0049 – Ibrahima – À dédouaner')"><div class="pay-ico pi-b">🛬</div><div class="pay-info"><div class="pay-name">BL-2025-0049 · Ibrahima Diallo</div><div class="pay-date">28kg · Arrivé · Dédouanement en cours</div></div><span class="pill p-blue">Douane</span></div>
+              <div class="pay-row" onclick="toast('📦 BL-2025-0050 – Mamadou – En livraison chantier')"><div class="pay-ico pi-g">🚚</div><div class="pay-info"><div class="pay-name">BL-2025-0050 · Mamadou Bah</div><div class="pay-date">45kg · En livraison chantier</div></div><span class="pill p-green">En livraison</span></div>
+              <div class="pay-row" onclick="toast('⚠️ BL-2025-0046 – Aissatou – Documents manquants')"><div class="pay-ico pi-r">⚠️</div><div class="pay-info"><div class="pay-name">BL-2025-0046 · Aissatou Barry</div><div class="pay-date">22kg · Bloqué – Documents douane manquants</div></div><span class="pill p-red">Bloqué</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- USERS SECTION -->
+        <div id="as-users" style="display:none">
+          <div class="ph"><div><h2>Gestion des utilisateurs</h2><p>24 comptes actifs</p></div><button class="btn-primary" onclick="toast('➕ Invitation envoyée')">+ Inviter utilisateur</button></div>
+          <div class="card">
+            <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+              <input class="ti" style="flex:1;min-width:200px;" placeholder="Rechercher un utilisateur…">
+              <select style="padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;background:var(--bg);">
+                <option>Tous les rôles</option><option>Diaspora</option><option>Agent</option><option>Admin</option>
+              </select>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="tbl">
+                <thead><tr><th>Nom</th><th>Rôle</th><th>Localisation</th><th>Statut</th><th>Dernière connexion</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="ava ava-blue" style="width:30px;height:30px;font-size:0.7rem;">MK</div><div class="proj-name">Mariam Kouyaté</div></div></td><td>Diaspora</td><td>Paris, France</td><td><span class="pill p-green">Actif</span></td><td style="font-size:0.75rem;color:var(--text-muted);">Aujourd'hui 10:02</td><td><button class="act-btn" onclick="toast('👤 Profil Mariam Kouyaté ouvert')">Voir</button></td></tr>
+                  <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="ava" style="background:linear-gradient(135deg,#0891B2,#22D3EE);width:30px;height:30px;font-size:0.7rem;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;">ID</div><div class="proj-name">Ibrahima Diallo</div></div></td><td>Diaspora</td><td>Lyon, France</td><td><span class="pill p-green">Actif</span></td><td style="font-size:0.75rem;color:var(--text-muted);">Hier 18:45</td><td><button class="act-btn" onclick="toast('👤 Profil Ibrahima Diallo ouvert')">Voir</button></td></tr>
+                  <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="ava ava-green" style="width:30px;height:30px;font-size:0.7rem;">AK</div><div class="proj-name">Alpha Kouyaté</div></div></td><td>Agent</td><td>Conakry, Guinée</td><td><span class="pill p-blue">Agent</span></td><td style="font-size:0.75rem;color:var(--text-muted);">Aujourd'hui 08:30</td><td><button class="act-btn" onclick="toast('👤 Profil Alpha Kouyaté ouvert')">Voir</button></td></tr>
+                  <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="ava" style="background:linear-gradient(135deg,#D97706,#FCD34D);color:#000;width:30px;height:30px;font-size:0.7rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">AB</div><div class="proj-name">Aissatou Barry</div></div></td><td>Diaspora</td><td>Montréal, Canada</td><td><span class="pill p-red">Alerte</span></td><td style="font-size:0.75rem;color:var(--text-muted);">Il y a 3 jours</td><td><button class="act-btn" onclick="toast('📞 Contacter Aissatou Barry')">Contacter</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- NOTIFICATIONS SECTION -->
+        <div id="as-notifications" style="display:none">
+          <div class="ph"><div><h2>Centre de notifications</h2><p>7 notifications non lues</p></div><button class="btn-outline" onclick="toast('✅ Toutes les notifications marquées comme lues')">Tout marquer lu</button></div>
+          <div class="card">
+            <div class="notif-item"><div class="ni-icon" style="background:rgba(206,17,38,0.1);">🚨</div><div class="ni-content"><div class="ni-title">Retard chantier – Aissatou Barry</div><div class="ni-desc">Les fondations du Duplex Kaloum accusent 12 jours de retard. Chef de chantier : Ibrahima Diallo.</div><div class="ni-time">Aujourd'hui 08:00</div></div><div class="ni-unread"></div></div>
+            <div class="notif-item"><div class="ni-icon" style="background:var(--gold-pale);">💰</div><div class="ni-content"><div class="ni-title">Paiement reçu – Mariam Kouyaté</div><div class="ni-desc">Paiement de 4 200 000 GNF confirmé. Étape : Élévation des murs.</div><div class="ni-time">Aujourd'hui 09:45</div></div><div class="ni-unread"></div></div>
+            <div class="notif-item"><div class="ni-icon" style="background:var(--blue-pale);">📦</div><div class="ni-content"><div class="ni-title">Colis bloqué en douane</div><div class="ni-desc">BL-2025-0046 (Aissatou Barry) est bloqué. Documents d'importation manquants.</div><div class="ni-time">Hier 16:30</div></div><div class="ni-unread"></div></div>
+            <div class="notif-item"><div class="ni-icon" style="background:rgba(27,122,69,0.1);">✅</div><div class="ni-content"><div class="ni-title">Projet livré – Mamadou Camara</div><div class="ni-desc">Villa Nongo livrée avec succès. Taux de satisfaction : ⭐⭐⭐⭐⭐</div><div class="ni-time">Il y a 2 jours</div></div></div>
+          </div>
+        </div>
+
+        <!-- EXPORTS SECTION -->
+        <div id="as-exports" style="display:none">
+          <div class="ph"><div><h2>Exports & Rapports</h2><p>Générer et télécharger vos données</p></div></div>
+          <div class="export-grid">
+            <div class="export-card" onclick="toast('📊 Rapport mensuel Mars 2025 généré – Téléchargement en cours…')">
+              <div class="ec-icon">📊</div>
+              <div class="ec-title">Rapport mensuel</div>
+              <div class="ec-desc">Activité, paiements, projets · Mars 2025</div>
+              <button class="ec-btn">⬇ Exporter PDF</button>
+            </div>
+            <div class="export-card" onclick="toast('💰 Export comptabilité CSV généré')">
+              <div class="ec-icon">📈</div>
+              <div class="ec-title">Comptabilité</div>
+              <div class="ec-desc">Tous les paiements et commissions</div>
+              <button class="ec-btn">⬇ Exporter CSV</button>
+            </div>
+            <div class="export-card" onclick="toast('👥 Export liste clients CSV généré')">
+              <div class="ec-icon">👥</div>
+              <div class="ec-title">Liste clients</div>
+              <div class="ec-desc">Données clients et projets associés</div>
+              <button class="ec-btn">⬇ Exporter CSV</button>
+            </div>
+            <div class="export-card" onclick="toast('🏗️ Export suivi projets PDF généré')">
+              <div class="ec-icon">🏗️</div>
+              <div class="ec-title">Suivi projets</div>
+              <div class="ec-desc">État d'avancement de tous les chantiers</div>
+              <button class="ec-btn">⬇ Exporter PDF</button>
+            </div>
+            <div class="export-card" onclick="toast('📦 Export colis & transferts CSV généré')">
+              <div class="ec-icon">📦</div>
+              <div class="ec-title">Colis & Transferts</div>
+              <div class="ec-desc">Historique complet des envois</div>
+              <button class="ec-btn">⬇ Exporter CSV</button>
+            </div>
+            <div class="export-card" onclick="toast('📋 Rapport investisseurs PDF généré')">
+              <div class="ec-icon">📋</div>
+              <div class="ec-title">Rapport investisseurs</div>
+              <div class="ec-desc">Vue stratégique et KPIs clés</div>
+              <button class="ec-btn">⬇ Exporter PDF</button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end admin-content -->
+    </div><!-- end admin-layout -->
+  </div>
+
+  <!-- MOBILE BOTTOM NAV – ADMIN -->
+  <nav class="mobile-nav">
+    <div class="mnav-inner">
+      <button class="mnav-item active" onclick="showAdminSection('dashboard',this)">
+        <div class="mnav-icon">📊</div><span class="mnav-label">Dashboard</span>
+      </button>
+      <button class="mnav-item" onclick="showAdminSection('projects',this)">
+        <div class="mnav-icon">🏗️</div><span class="mnav-label">Projets</span>
+      </button>
+      <button class="mnav-item" onclick="showAdminSection('finances',this)">
+        <div class="mnav-icon">💰</div><span class="mnav-label">Finances</span>
+      </button>
+      <button class="mnav-item" onclick="showAdminSection('users',this)">
+        <div class="mnav-icon">👥</div><span class="mnav-label">Clients</span>
+      </button>
+      <button class="mnav-item" onclick="showAdminSection('exports',this)">
+        <div class="mnav-icon">📤</div><span class="mnav-label">Exports</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="overlay" id="payModal">
+  <div class="modal">
+    <h3>Confirmer le paiement 💳</h3>
+    <p class="modal-sub">Étape 3 – Élévation des murs · Villa Ratoma, Conakry</p>
+    <div class="modal-amount-box">
+      <div class="mab-amt">4 200 000 GNF</div>
+      <div class="mab-sub">≈ 450 € · Paiement sécurisé · SSL chiffré</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;cursor:pointer;" onclick="toast('💳 Carte bancaire sélectionnée')"><div style="font-size:20px;margin-bottom:4px;">💳</div><div style="font-size:0.75rem;color:var(--text-mid);font-weight:600;">Carte bancaire</div></div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;cursor:pointer;" onclick="toast('🏦 Western Union sélectionné')"><div style="font-size:20px;margin-bottom:4px;">🏦</div><div style="font-size:0.75rem;color:var(--text-mid);font-weight:600;">Western Union</div></div>
+    </div>
+    <div class="modal-btns">
+      <button class="mbtn-cancel" onclick="closeModal('payModal')">Annuler</button>
+      <button class="mbtn-pay" onclick="confirmPayment()">Confirmer le paiement →</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="success-icon">✅</div>
+    <h3>Paiement confirmé !</h3>
+    <p>Votre paiement de <strong>4 200 000 GNF</strong> a bien été reçu. L'agence à Conakry a été notifiée automatiquement. Un reçu vous a été envoyé par email.</p>
+    <button class="success-close" onclick="closeModal('successOverlay')">Fermer</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toastEl"><span id="toastMsg"></span></div>
+
+<script>
+let currentRole = 'diaspora';
+
+function selectRole(el, role) {
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  currentRole = role;
+}
+
+function doLogin() {
+  const email = document.getElementById('loginEmail').value;
+  if (!email) { toast('⚠ Veuillez entrer votre adresse e-mail'); return; }
+  hide('page-login');
+  if (currentRole === 'diaspora') show('page-diaspora');
+  else if (currentRole === 'agence') show('page-agence');
+  else show('page-admin');
+}
+
+function doLogout() {
+  ['page-diaspora','page-agence','page-admin'].forEach(hide);
+  show('page-login');
+}
+
+function show(id) { document.getElementById(id).classList.add('active'); }
+function hide(id) { document.getElementById(id).classList.remove('active'); }
+
+function setDiasporaTab(tab, btn) {
+  ['dashboard','payments','messages','docs','colis'].forEach(t => {
+    document.getElementById('dtab-'+t).style.display = t===tab ? 'block' : 'none';
+  });
+  if(btn && btn.classList && btn.classList.contains('tn-tab')) {
+    document.querySelectorAll('#page-diaspora .tn-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  // Sync mobile nav
+  document.querySelectorAll('#page-diaspora .mnav-item').forEach(b => b.classList.remove('active'));
+  const mobileBtn = document.getElementById('mnav-d-'+tab);
+  if(mobileBtn) mobileBtn.classList.add('active');
+}
+
+function setAgenceTab(tab, btn) {
+  ['projects','update','payments','colis-agence','chat-agence'].forEach(t => {
+    document.getElementById('atab-'+t).style.display = t===tab ? 'block' : 'none';
+  });
+  if(btn) {
+    document.querySelectorAll('#page-agence .tn-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+  }
+}
+
+function showAdminSection(section, clickedEl) {
+  ['dashboard','projects','finances','colis-admin','users','notifications','exports'].forEach(s => {
+    const el = document.getElementById('as-'+s);
+    if(el) el.style.display = s===section ? 'block' : 'none';
+  });
+  document.querySelectorAll('.aside-item').forEach(i => i.classList.remove('on'));
+  if(clickedEl && clickedEl.classList && clickedEl.classList.contains('aside-item')) {
+    clickedEl.classList.add('on');
+  }
+  // Update mobile nav active state
+  document.querySelectorAll('#page-admin .mnav-item').forEach(i => i.classList.remove('active'));
+  if(clickedEl && clickedEl.classList && clickedEl.classList.contains('mnav-item')) {
+    clickedEl.classList.add('active');
+  }
+}
+
+function setMobileNav(page, tab) {
+  const prefix = page === 'd' ? 'mnav-d-' : 'mnav-a-';
+  document.querySelectorAll('[id^="'+prefix+'"]').forEach(b => b.classList.remove('active'));
+  const target = document.getElementById(prefix+tab);
+  if(target) target.classList.add('active');
+  // Also update general mobile nav
+  const page_el = page === 'd' ? '#page-diaspora' : '#page-agence';
+  document.querySelectorAll(page_el+' .mnav-item').forEach(b => b.classList.remove('active'));
+}
+
+function switchInner(el, tab) {
+  el.closest('.card').querySelectorAll('.itab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('inner-photos').style.display = tab==='photos' ? 'block' : 'none';
+  document.getElementById('inner-progress').style.display = tab==='progress' ? 'block' : 'none';
+}
+
+function openPayModal() { document.getElementById('payModal').classList.add('on'); }
+function closeModal(id) { document.getElementById(id).classList.remove('on'); }
+
+function confirmPayment() {
+  closeModal('payModal');
+  setTimeout(() => document.getElementById('successOverlay').classList.add('on'), 200);
+  const ab = document.querySelector('.alert-box');
+  if(ab) {
+    ab.style.background='linear-gradient(135deg,#F0FAF5,#E0F5EA)';
+    ab.style.borderColor='rgba(27,122,69,0.3)';
+    ab.querySelector('h4').textContent='Paiement effectué ! ✅';
+    ab.querySelector('h4').style.color='var(--green)';
+    ab.querySelector('p').textContent='4 200 000 GNF reçus · Confirmation envoyée à l\'agence';
+    const btn = ab.querySelector('.ab-btn');
+    if(btn) btn.style.display='none';
+    const icon = ab.querySelector('.ab-icon');
+    if(icon) icon.textContent='✅';
+  }
+}
+
+function sendChat() {
+  const inp = document.getElementById('chatInput');
+  const txt = inp.value.trim();
+  if(!txt) return;
+  appendMsg('chatArea', txt, 'me');
+  inp.value='';
+  setTimeout(() => {
+    const replies = ["Bien reçu Madame Kouyaté ! 🙏","Je transmets à l'équipe sur le terrain.","Merci pour votre confiance !"];
+    appendMsg('chatArea', replies[Math.floor(Math.random()*replies.length)], 'ag');
+  }, 1100);
+}
+function sendChat2() {
+  const inp = document.getElementById('chatInput2');
+  const txt = inp.value.trim();
+  if(!txt) return;
+  appendMsg('chatArea2', txt, 'me');
+  inp.value='';
+  setTimeout(() => {
+    const replies = ["Bien reçu ! Nous revenons vers vous rapidement. 🙏","Parfait, je transmets l'information.","Merci de votre confiance Madame Kouyaté !"];
+    appendMsg('chatArea2', replies[Math.floor(Math.random()*replies.length)], 'ag');
+  }, 1100);
+}
+function sendChatAgence() {
+  const inp = document.getElementById('chatInputAgence');
+  const txt = inp.value.trim();
+  if(!txt) return;
+  appendMsg('chatAreaAgence', txt, 'ag-me');
+  inp.value='';
+  setTimeout(() => {
+    const replies = ["Merci beaucoup ! 🙏","D'accord, nous avons bien noté.","Super, on attendra votre retour."];
+    appendMsg('chatAreaAgence', replies[Math.floor(Math.random()*replies.length)], 'client');
+  }, 1100);
+}
+
+function appendMsg(areaId, text, type) {
+  const area = document.getElementById(areaId);
+  if(!area) return;
+  const msg = document.createElement('div');
+  if(type === 'me') {
+    msg.className = 'cmsg me';
+    msg.innerHTML = `<div class="cava cava-me">MK</div><div><div class="cbubble cb-me">${text}</div><div class="ctime">À l'instant</div></div>`;
+  } else if(type === 'ag-me') {
+    msg.className = 'cmsg me';
+    msg.innerHTML = `<div class="cava cava-ag">AG</div><div><div class="cbubble cb-me">${text}</div><div class="ctime">À l'instant</div></div>`;
+  } else if(type === 'client') {
+    msg.className = 'cmsg';
+    msg.innerHTML = `<div class="cava cava-me">MK</div><div><div class="cbubble cb-ag">${text}</div><div class="ctime">À l'instant</div></div>`;
+  } else {
+    msg.className = 'cmsg';
+    msg.innerHTML = `<div class="cava cava-ag">AG</div><div><div class="cbubble cb-ag">${text}</div><div class="ctime">À l'instant</div></div>`;
+  }
+  area.appendChild(msg);
+  area.scrollTop = area.scrollHeight;
+}
+
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toastEl');
+  document.getElementById('toastMsg').textContent = msg;
+  el.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('on'), 3200);
+}
+
+document.addEventListener('keydown', e => {
+  if(e.key==='Escape') { closeModal('payModal'); closeModal('successOverlay'); }
+});
+
+window.addEventListener('load', () => {
+  document.querySelectorAll('.prog-fill').forEach(b => {
+    const w = b.style.width;
+    b.style.width = '0';
+    setTimeout(() => { b.style.transition='width 1.2s ease'; b.style.width=w; }, 400);
+  });
+});
+</script>
+</body>
+</html>

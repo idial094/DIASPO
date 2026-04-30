@@ -1,0 +1,21 @@
+export const colors = {
+  blue: "#1A6FC4",
+  blueMid: "#2582DB",
+  blueLight: "#4FA3F0",
+  bluePale: "#EAF4FF",
+  gold: "#C8922A",
+  goldLight: "#E8B84B",
+  goldPale: "#FEF8EC",
+  green: "#1B7A45",
+  greenLight: "#22A05A",
+  red: "#CE1126",
+  bg: "#F4F7FB",
+  bg2: "#EBF1F9",
+  white: "#FFFFFF",
+  dark: "#0E1B2E",
+  dark2: "#1C2E46",
+  border: "#D6E4F2",
+  text: "#1A2B40",
+  textMid: "#4A6080",
+  textMuted: "#8AA0B8"
+} as const;
