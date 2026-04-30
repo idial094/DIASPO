@@ -5,6 +5,7 @@ export const endpoints = {
   },
   auth: {
     login: "/api/auth/login",
+    register: "/api/auth/register",
     logout: "/api/auth/logout",
     refresh: "/api/auth/refresh",
     adminLogin: "/api/auth/admin/login"

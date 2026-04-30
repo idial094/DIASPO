@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { verify as totpVerify } from "otplib";
+import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { db } from "../db/client.js";
 import { users } from "../db/schema.js";
@@ -17,8 +18,62 @@ const adminLoginSchema = z.object({
   password: z.string().min(6),
   totp: z.string().length(6),
 });
+const registerSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+  role: z.enum(["diaspora", "agence"]),
+  name: z.string().min(2),
+  location: z.string().trim().optional(),
+});
 
 export async function authRoutes(app: FastifyInstance) {
+  app.post("/api/auth/register", async (request, reply) => {
+    const payload = registerSchema.parse(request.body);
+    const normalizedEmail = payload.email.toLowerCase();
+
+    const [existing] = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, normalizedEmail));
+
+    if (existing) {
+      return reply.code(409).send({ message: "Cet email est deja utilise." });
+    }
+
+    const userId = `u-${payload.role}-${randomUUID().slice(0, 8)}`;
+    const passwordHash = await bcrypt.hash(payload.password, 12);
+
+    await db.insert(users).values({
+      id: userId,
+      email: normalizedEmail,
+      passwordHash,
+      name: payload.name.trim(),
+      role: payload.role,
+      location: payload.location?.trim() || null,
+      isActive: true,
+      totpEnabled: false,
+      createdAt: new Date(),
+    });
+
+    const token = app.jwt.sign({
+      sub: userId,
+      email: normalizedEmail,
+      role: payload.role,
+    });
+
+    return reply.code(201).send({
+      token,
+      expiresIn: 60 * 60 * 8,
+      user: {
+        id: userId,
+        email: normalizedEmail,
+        role: payload.role,
+        name: payload.name.trim(),
+        location: payload.location?.trim() || undefined,
+      },
+    });
+  });
+
   // ─── Public login (diaspora / agence) ───────────────────────────────────────
   app.post("/api/auth/login", async (request, reply) => {
     const payload = publicLoginSchema.parse(request.body);
